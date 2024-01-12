@@ -1,0 +1,15 @@
+C:\Users\disrct\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.exe
+C:\Users\disrct\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.deps.json
+C:\Users\disrct\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.runtimeconfig.json
+C:\Users\disrct\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.dll
+C:\Users\disrct\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.pdb
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.csproj.AssemblyReference.cache
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.AssemblyInfoInputs.cache
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.AssemblyInfo.cs
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.csproj.CoreCompileInputs.cache
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.dll
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\refint\alienPersuit.dll
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.pdb
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.genruntimeconfig.cache
+C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\ref\alienPersuit.dll
