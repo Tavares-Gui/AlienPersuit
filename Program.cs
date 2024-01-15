@@ -54,6 +54,15 @@ var form = new Form {
     Controls = { pb }
 };
 
+// public void Draw(Graphics g)
+// {
+//     RectangleF rectBar = new RectangleF(
+//         X - Size / 2, Y, Size, 40
+//     );
+//     g.FillRectangle(Brushes.Purple, rectBar);
+//     g.DrawRectangle(Pens.Black, rectBar);
+// }
+
 form.Load += (o, e) =>
 {
     bmp = new Bitmap(
@@ -130,6 +139,7 @@ form.KeyUp += (o, e) =>
             break;
     }
 };
+
 
 
 Application.Run(form);
