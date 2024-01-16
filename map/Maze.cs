@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Collections.Generic;
 
 public class Maze
@@ -145,10 +144,10 @@ public class MazeView
     bool solve = false;
     public Maze Maze { get; set; }
 
-    protected override void OnStart(Graphics g)
+    protected void OnStart(Graphics g)
     {
         this.Maze = Maze.Prim(solx, soly);
-        g.KeyDownEvent(key =>
+        g.KeyDownEvent += (o, e) =>
         {
             if (key == Input.Escape)
                 App.Close();
@@ -156,54 +155,35 @@ public class MazeView
             if (key == Input.Space)
             {
                 this.Maze = Maze.Prim(solx, soly);
-                this.Solver.Maze = this.Maze;
-                Invalidate();
-            }
-
-            if (key == Input.S)
-            {
-                solve = !solve;
-                if (!solve)
-                {
-                    Maze.Reset();
-                    Invalidate();
-                }
             }
 
             if (key == Input.U)
             {
                 update = !update;
             }
-        });
+        };
     }
 
-    protected override void OnRender(Graphics g)
+    protected void OnRender(Graphics g)
     {
         g.Clear(Color.Black);
         foreach (var space in Maze.Spaces)
             drawSpace(space, g);
     }
 
-    protected override void OnFrame(Graphics g)
+
+
+    protected void OnFrame(Graphics g)
     {
         if (update)
         {
             var dx = g.Width / 48;
             var dy = g.Height / 27;
-            solx = (int)(g.Cursor.X / dx);
-            soly = (int)(g.Cursor.Y / dy);
 
             foreach (var space in Maze.Spaces)
             {
                 space.Exit = space.X == solx && space.Y == soly;
             }
-
-            Invalidate();
-        }
-
-        if (solve)
-        {
-            Maze.Reset();
         }
     }
 
