@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Windows.Forms;
 
 public class Game : Form
@@ -20,15 +21,7 @@ public class Game : Form
     public Space Left { get; set; } = null;
     public Space Right { get; set; } = null;
     public Space Bottom { get; set; } = null;
-    public bool Visited { get; set; } = false;
-    public bool IsSolution { get; set; } = false;
     public bool Exit { get; set; } = false;
-
-    public void Reset()
-    {
-        IsSolution = false;
-        Visited = false;
-    }
 
     private Maze maze;
     private Space crrSpace;
@@ -75,7 +68,6 @@ public class Game : Form
             timer.Start();
         };
 
-
         Controls.Add(Pb);
         timer.Tick += (o, e) => this.Tick();
 
@@ -102,18 +94,25 @@ public class Game : Form
     {
         this.Pb.Refresh();
         DrawFloor();
-        DrawMaze(crrSpace, baseX, baseY);
+        DrawMaze(baseX, baseY, crrSpace);
         TickCounter++;
     }
 
-    private void DrawMaze(Space space, float x, float y)
+    private void DrawMaze(float x, float y, Space space)
     {
-        if (space == null || space.Visited)
+        if (space == null)
             return;
 
-        space.Visited = true;
+        DrawWall(space);
 
-        
+        if (space.Top != null)
+            G.DrawImage(wall, x, y - wall.Height);
+        if (space.Bottom != null)
+            G.DrawImage(wall, x, y + wall.Height);
+        if (space.Left != null)
+            G.DrawImage(wall, x - wall.Width, y);
+        if (space.Right != null)
+            G.DrawImage(wall, x + wall.Width, y);
     }
 
     private void DrawFloor()
@@ -131,7 +130,15 @@ public class Game : Form
         }
     }
 
-    private void DrawWall(float x, float y, Space space)
+    private void DrawWall(Space space)
     {
+        if (space.Top == null)
+            G.DrawImage(wall, baseX, baseY - wall.Height);
+        if (space.Bottom == null)
+            G.DrawImage(wall, baseX, baseY + wall.Height);
+        if (space.Left == null)
+            G.DrawImage(wall, baseX - wall.Width, baseY);
+        if (space.Right == null)
+            G.DrawImage(wall, baseX + wall.Width, baseY);
     }
 }
