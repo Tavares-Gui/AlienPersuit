@@ -28,8 +28,9 @@ public class Game : Form
 
     private Image floor = Image.FromFile("./assets/blocks/floor.png");
     private Image wall = Image.FromFile("./assets/blocks/wall.png");
-    private float baseX = 0;
-    private float baseY = 0;
+    private float baseX = 200;
+    private float baseY = 200;
+
     public Game()
     {
         maze = Maze.Prim(
