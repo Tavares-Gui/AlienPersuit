@@ -12,7 +12,7 @@ public class Game : Form
     public int TickCounter { get; set; }
     public Player Player { get; set; }
     public Enemy Enemy { get; set; }
-
+    public int Index { get; set; }
 
     public int X { get; set; }
     public int Y { get; set; }
@@ -26,12 +26,25 @@ public class Game : Form
     private Space crrSpace;
 
     private Image floor = Image.FromFile("./assets/blocks/floor.png");
-    private Image wallUp = Image.FromFile("./assets/blocks/wallUp.png");
-    private Image wallDown = Image.FromFile("./assets/blocks/wallDown.png");
-    private Image wallRight = Image.FromFile("./assets/blocks/wallRight.png");
-    private Image wallLeft = Image.FromFile("./assets/blocks/wallLeft.png");
+    private Image floor1 = Image.FromFile("./assets/blocks/floor1.png");
+    private Image floor2 = Image.FromFile("./assets/blocks/floor2.png");
+    private Image floor3 = Image.FromFile("./assets/blocks/floor3.png");
+    private Image floor4 = Image.FromFile("./assets/blocks/floor4.png");
+    private Image floor5 = Image.FromFile("./assets/blocks/floor5.png");
+    private Image floor6 = Image.FromFile("./assets/blocks/floor6.png");
+    private Image floor7 = Image.FromFile("./assets/blocks/floor7.png");
+
+    private Image wallVertical = Image.FromFile("./assets/blocks/wallVertical.png");
+    private Image wallHorizontal = Image.FromFile("./assets/blocks/wallHorizontal.png");
+
     private Image heart = Image.FromFile("./assets/objects/heart.png");
     private Image seed = Image.FromFile("./assets/objects/seed.png");
+
+    Image[] enemyAnim = 
+    {
+        Bitmap.FromFile("./assets/enemy/enemy1.png"),
+        Bitmap.FromFile("./assets/enemy/enemy2.png")
+    };
 
     private float baseX = 200;
     private float baseY = 200;
@@ -101,6 +114,7 @@ public class Game : Form
         this.Pb.Refresh();
         DrawFloor();
         DrawMaze(baseX, baseY, crrSpace);
+        // DrawEnemies();
         DrawStats();
         TickCounter++;
     }
@@ -110,16 +124,7 @@ public class Game : Form
         if (space == null)
             return;
 
-        DrawWall(space);
-
-        if (space.Top != null)
-            G.DrawImage(wallUp, x, y - wallUp.Height);
-        if (space.Bottom != null)
-            G.DrawImage(wallDown, x, y + wallDown.Height);
-        if (space.Left != null)
-            G.DrawImage(wallLeft, x - wallLeft.Width, y);
-        if (space.Right != null)
-            G.DrawImage(wallRight, x + wallRight.Width, y);
+        DrawWall(space, x, y);
     }
 
     private void DrawFloor()
@@ -137,16 +142,26 @@ public class Game : Form
         }
     }
 
-    private void DrawWall(Space space)
+    private void DrawWall(Space space, float x, float y, int max = 5)
     {
+        if (max < 0)
+            return;
+        
         if (space.Top == null)
-            G.DrawImage(wallUp, baseX, baseY - wallUp.Height);
+            G.DrawImage(wallHorizontal, x, y - wallHorizontal.Height);
+        else DrawWall(space.Top, x, y - wallHorizontal.Height, max - 1);
+
         if (space.Bottom == null)
-            G.DrawImage(wallDown, baseX, baseY + wallDown.Height);
+            G.DrawImage(wallHorizontal, x, y + wallHorizontal.Height);
+        else DrawWall(space.Bottom, x, y + wallHorizontal.Height, max - 1);
+
         if (space.Left == null)
-            G.DrawImage(wallLeft, baseX - wallLeft.Width, baseY);
+            G.DrawImage(wallVertical, x - wallVertical.Width, y);
+        else DrawWall(space.Left, x - wallHorizontal.Width, y, max - 1);
+
         if (space.Right == null)
-            G.DrawImage(wallRight, baseX + wallRight.Width, baseY);
+            G.DrawImage(wallVertical, x + wallVertical.Width, y);
+        else DrawWall(space.Right, x + wallHorizontal.Width, y, max - 1);
     }
 
     private void DrawStats()
@@ -162,8 +177,25 @@ public class Game : Form
         G.DrawString(Player.Seeds.ToString(), font, textBrush, new PointF(Pb.Width * 0.10f, Pb.Height * 0.05f));
     }
 
-    private void DrawEnemies()
-    {
+    // private void DrawEnemies()
+    // {
+    //     Index = 0;
+    //     const int speed = 3;
 
-    }
+    //     for (int i = Enemy.EnemyLife; i > 0; i++)
+    //     {
+    //         if (Index < speed)
+    //         {
+    //             G.DrawImage(enemyAnim[0], 20, 20);
+    //             Index++;
+    //         }
+    //         else
+    //         {
+    //             G.DrawImage(enemyAnim[1], 20, 20);
+    //             Index++;
+    //             if (Index > 2 * speed)
+    //                 Index = 0;
+    //         }
+    //     }
+    // }
 }
