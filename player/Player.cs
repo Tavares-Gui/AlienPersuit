@@ -4,8 +4,8 @@ using System.Windows.Forms;
 
 public class Player
 {
-    public int PlayerLife { get; set; }
-    public int Seeds { get; set; }
+    public int PlayerLife { get; set; } = 3;
+    public int Seeds { get; set; } = 4;
     public int Tools { get; set; }
     public float Vx { get; set; }
     public float Vy { get; set; }

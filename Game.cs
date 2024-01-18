@@ -1,7 +1,6 @@
 using System;
-using System.Drawing;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
+using System.Drawing;
 using System.Windows.Forms;
 
 public class Game : Form
@@ -27,7 +26,13 @@ public class Game : Form
     private Space crrSpace;
 
     private Image floor = Image.FromFile("./assets/blocks/floor.png");
-    private Image wall = Image.FromFile("./assets/blocks/wall.png");
+    private Image wallUp = Image.FromFile("./assets/blocks/wallUp.png");
+    private Image wallDown = Image.FromFile("./assets/blocks/wallDown.png");
+    private Image wallRight = Image.FromFile("./assets/blocks/wallRight.png");
+    private Image wallLeft = Image.FromFile("./assets/blocks/wallLeft.png");
+    private Image heart = Image.FromFile("./assets/objects/heart.png");
+    private Image seed = Image.FromFile("./assets/objects/seed.png");
+
     private float baseX = 200;
     private float baseY = 200;
 
@@ -96,6 +101,7 @@ public class Game : Form
         this.Pb.Refresh();
         DrawFloor();
         DrawMaze(baseX, baseY, crrSpace);
+        DrawStats();
         TickCounter++;
     }
 
@@ -107,13 +113,13 @@ public class Game : Form
         DrawWall(space);
 
         if (space.Top != null)
-            G.DrawImage(wall, x, y - wall.Height);
+            G.DrawImage(wallUp, x, y - wallUp.Height);
         if (space.Bottom != null)
-            G.DrawImage(wall, x, y + wall.Height);
+            G.DrawImage(wallDown, x, y + wallDown.Height);
         if (space.Left != null)
-            G.DrawImage(wall, x - wall.Width, y);
+            G.DrawImage(wallLeft, x - wallLeft.Width, y);
         if (space.Right != null)
-            G.DrawImage(wall, x + wall.Width, y);
+            G.DrawImage(wallRight, x + wallRight.Width, y);
     }
 
     private void DrawFloor()
@@ -134,12 +140,30 @@ public class Game : Form
     private void DrawWall(Space space)
     {
         if (space.Top == null)
-            G.DrawImage(wall, baseX, baseY - wall.Height);
+            G.DrawImage(wallUp, baseX, baseY - wallUp.Height);
         if (space.Bottom == null)
-            G.DrawImage(wall, baseX, baseY + wall.Height);
+            G.DrawImage(wallDown, baseX, baseY + wallDown.Height);
         if (space.Left == null)
-            G.DrawImage(wall, baseX - wall.Width, baseY);
+            G.DrawImage(wallLeft, baseX - wallLeft.Width, baseY);
         if (space.Right == null)
-            G.DrawImage(wall, baseX + wall.Width, baseY);
+            G.DrawImage(wallRight, baseX + wallRight.Width, baseY);
+    }
+
+    private void DrawStats()
+    {
+        Color textColor = Color.White;
+        SolidBrush textBrush = new(textColor);
+
+        Font font = new("Arial", 12, FontStyle.Bold);
+
+        G.DrawImage(heart, Pb.Width * 0.01f, Pb.Height * 0.01f);
+        G.DrawImage(seed, Pb.Width * 0.06f, Pb.Height * 0.01f);
+        G.DrawString(Player.PlayerLife.ToString(), font, textBrush, new PointF(Pb.Width * 0.05f, Pb.Height * 0.05f));
+        G.DrawString(Player.Seeds.ToString(), font, textBrush, new PointF(Pb.Width * 0.10f, Pb.Height * 0.05f));
+    }
+
+    private void DrawEnemies()
+    {
+
     }
 }
