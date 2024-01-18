@@ -33,6 +33,10 @@ public class Game : Form
     private Image floor5 = Image.FromFile("./assets/blocks/floor5.png");
     private Image floor6 = Image.FromFile("./assets/blocks/floor6.png");
     private Image floor7 = Image.FromFile("./assets/blocks/floor7.png");
+    private Image floor8 = Image.FromFile("./assets/blocks/floor8.png");
+    private Image floor9 = Image.FromFile("./assets/blocks/floor9.png");
+    private Image floor10 = Image.FromFile("./assets/blocks/floor10.png");
+    private Image floor11 = Image.FromFile("./assets/blocks/floor11.png");
 
     private Image wallVertical = Image.FromFile("./assets/blocks/wallVertical.png");
     private Image wallHorizontal = Image.FromFile("./assets/blocks/wallHorizontal.png");
@@ -115,6 +119,7 @@ public class Game : Form
         DrawFloor();
         DrawMaze(baseX, baseY, crrSpace);
         // DrawEnemies();
+        DrawLantern();
         DrawStats();
         TickCounter++;
     }
@@ -175,6 +180,15 @@ public class Game : Form
         G.DrawImage(seed, Pb.Width * 0.06f, Pb.Height * 0.01f);
         G.DrawString(Player.PlayerLife.ToString(), font, textBrush, new PointF(Pb.Width * 0.05f, Pb.Height * 0.05f));
         G.DrawString(Player.Seeds.ToString(), font, textBrush, new PointF(Pb.Width * 0.10f, Pb.Height * 0.05f));
+    }
+
+    private void DrawLantern()
+    {
+        Pen pen = new Pen(Color.Black, 5);
+        
+        // G.DrawEllipse(pen, 100, 100, 125, 125);
+
+        G.DrawRectangle(pen, 500, 500, 125, 125);
     }
 
     // private void DrawEnemies()
