@@ -14,6 +14,7 @@ public class Game : Form
     public Enemy Enemy { get; set; }
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
+    private Random random = new Random();
 
     public int X { get; set; }
     public int Y { get; set; }
@@ -65,6 +66,7 @@ public class Game : Form
 
     public Game()
     {
+
         maze = Maze.Prim(
             Random.Shared.Next(48),
             Random.Shared.Next(27)
@@ -129,9 +131,9 @@ public class Game : Form
         this.Pb.Refresh();
         DrawFloor();
         DrawMaze(baseX, baseY, crrSpace);
-        DrawChest();
-        DrawEnemies();
-        DrawStats();
+        // DrawChest();
+        // DrawEnemies();
+        // DrawStats();
         TickCounter++;
     }
 
@@ -158,7 +160,7 @@ public class Game : Form
         }
     }
 
-    private void DrawWall(Space space, float x, float y, int max = 5)
+    private void DrawWall(Space space, float x, float y, int max = 10)
     {
         if (max < 0)
             return;
@@ -168,15 +170,15 @@ public class Game : Form
         else DrawWall(space.Top, x, y - wallHorizontal.Height, max - 1);
 
         if (space.Bottom == null)
-            G.DrawImage(wallHorizontal, x, y + wallHorizontal.Height);
+            G.DrawImage(wallHorizontal, x, y);
         else DrawWall(space.Bottom, x, y + wallHorizontal.Height, max - 1);
 
         if (space.Left == null)
-            G.DrawImage(wallVertical, x - wallVertical.Width, y);
+            G.DrawImage(wallVertical, x, y);
         else DrawWall(space.Left, x - wallHorizontal.Width, y, max - 1);
 
         if (space.Right == null)
-            G.DrawImage(wallVertical, x + wallVertical.Width, y);
+            G.DrawImage(wallVertical, x, y);
         else DrawWall(space.Right, x + wallHorizontal.Width, y, max - 1);
     }
 
