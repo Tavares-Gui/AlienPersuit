@@ -1,21 +1,18 @@
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Collections.Generic;
 
-public class Enemy
+public class Chest
 {
-    public int EnemyLife { get; set; } = 3;
+    public bool Open { get; set; } = false;
     public float X { get; set; }
     public float Y { get; set; }
     public float Size { get; set; } = 10;
-    public float Speed { get; set; } = 4;
     public List<Image> img { get; set; }
 
-    public void Draw(int enemyLife, int speed, string img1Path, string img2Path)
+    public void Draw(bool open, string img1Path, string img2Path)
     {
-        this.EnemyLife = enemyLife;
-        this.Speed = speed;
+        this.Open = open;
         this.img = new(){Bitmap.FromFile(img1Path), Bitmap.FromFile(img2Path)};
     }
 }

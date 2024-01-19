@@ -12,7 +12,8 @@ public class Game : Form
     public int TickCounter { get; set; }
     public Player Player { get; set; }
     public Enemy Enemy { get; set; }
-    public int Index { get; set; }
+    public Chest Chest { get; set; }
+    public int Index { get; set; } = 0;
 
     public int X { get; set; }
     public int Y { get; set; }
@@ -44,10 +45,19 @@ public class Game : Form
     private Image heart = Image.FromFile("./assets/objects/heart.png");
     private Image seed = Image.FromFile("./assets/objects/seed.png");
 
-    Image[] enemyAnim = 
+    private Image chestClosed = Image.FromFile("./assets/objects/chestClosed.png");
+    private Image chestOpened = Image.FromFile("./assets/objects/chestOpened.png");
+
+    public Image[] enemyAnim = 
     {
         Bitmap.FromFile("./assets/enemy/enemy1.png"),
         Bitmap.FromFile("./assets/enemy/enemy2.png")
+    };
+
+    public Image[] chestAnim = 
+    {
+        Bitmap.FromFile("./assets/objects/chestClosed.png"),
+        Bitmap.FromFile("./assets/objects/chestOpened.png")
     };
 
     private float baseX = 200;
@@ -70,6 +80,7 @@ public class Game : Form
         this.Tmr = timer;
         this.Player = new();
         this.Enemy = new();
+        this.Chest = new();
 
         this.Pb = new()
         {
@@ -118,8 +129,8 @@ public class Game : Form
         this.Pb.Refresh();
         DrawFloor();
         DrawMaze(baseX, baseY, crrSpace);
-        // DrawEnemies();
-        DrawLantern();
+        DrawChest();
+        DrawEnemies();
         DrawStats();
         TickCounter++;
     }
@@ -151,9 +162,9 @@ public class Game : Form
     {
         if (max < 0)
             return;
-        
+
         if (space.Top == null)
-            G.DrawImage(wallHorizontal, x, y - wallHorizontal.Height);
+            G.DrawImage(wallHorizontal, x, y);
         else DrawWall(space.Top, x, y - wallHorizontal.Height, max - 1);
 
         if (space.Bottom == null)
@@ -182,34 +193,33 @@ public class Game : Form
         G.DrawString(Player.Seeds.ToString(), font, textBrush, new PointF(Pb.Width * 0.10f, Pb.Height * 0.05f));
     }
 
-    private void DrawLantern()
+    private void DrawEnemies()
     {
-        Pen pen = new Pen(Color.Black, 5);
-        
-        // G.DrawEllipse(pen, 100, 100, 125, 125);
+        const int speedAnimEnemy = 6;
 
-        G.DrawRectangle(pen, 500, 500, 125, 125);
+        if (Enemy.EnemyLife > 0)
+        {
+            if (Index < speedAnimEnemy)
+            {
+                G.DrawImage(enemyAnim[0], 50, 50);
+                Index++;
+            }
+            else
+            {
+                G.DrawImage(enemyAnim[1], 50, 50);
+                Index++;
+                if (Index > 2 * speedAnimEnemy)
+                    Index = 0;
+            }
+        }
     }
 
-    // private void DrawEnemies()
-    // {
-    //     Index = 0;
-    //     const int speed = 3;
+    private void DrawChest()
+    {
+        if (Chest.Open == true)
+            G.DrawImage(chestAnim[1], 100, 100);
+        else G.DrawImage(chestAnim[0], 100, 100);
+    }
 
-    //     for (int i = Enemy.EnemyLife; i > 0; i++)
-    //     {
-    //         if (Index < speed)
-    //         {
-    //             G.DrawImage(enemyAnim[0], 20, 20);
-    //             Index++;
-    //         }
-    //         else
-    //         {
-    //             G.DrawImage(enemyAnim[1], 20, 20);
-    //             Index++;
-    //             if (Index > 2 * speed)
-    //                 Index = 0;
-    //         }
-    //     }
-    // }
+    private void DrawLantern(){ }
 }
