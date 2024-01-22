@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Security;
 using System.Windows.Forms;
 
 public class Player
@@ -11,8 +12,10 @@ public class Player
     public float Vy { get; set; }
     public float Speed { get; set; } = 5;
 
-    public void Draw(Graphics g, PictureBox pb, Bitmap bmp)
+    public void Draw(int playerLife, int seeds, int speed)
     {
-        g.DrawImage(Bitmap.FromFile("../assets/player/downDefault.png"), 5, 5, 5, 5);
+        this.PlayerLife = playerLife;
+        this.Seeds = seeds;
+        this.Speed = speed;
     }
 }

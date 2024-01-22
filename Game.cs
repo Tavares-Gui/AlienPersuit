@@ -2,6 +2,9 @@ using System;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 public class Game : Form
 {
@@ -14,7 +17,7 @@ public class Game : Form
     public Enemy Enemy { get; set; }
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
-    private Random random = new Random();
+      private Random random = new Random();
 
     public int X { get; set; }
     public int Y { get; set; }
@@ -23,6 +26,10 @@ public class Game : Form
     public Space Right { get; set; } = null;
     public Space Bottom { get; set; } = null;
     public bool Exit { get; set; } = false;
+    public float CurrentX { get; set; }
+    public float CurrentY { get; set; }
+    public float TargetX { get; set; } = 0;
+    public float TargetY { get; set; } = 0;
 
     private Maze maze;
     private Space crrSpace;
@@ -66,11 +73,7 @@ public class Game : Form
 
     public Game()
     {
-
-        maze = Maze.Prim(
-            Random.Shared.Next(48),
-            Random.Shared.Next(27)
-        );
+        maze = Maze.Prim(3, 3);
         crrSpace = maze.Spaces
             .OrderByDescending(s => Random.Shared.Next())
             .FirstOrDefault();
@@ -128,9 +131,10 @@ public class Game : Form
 
     public void Tick()
     {
-        this.Pb.Refresh();
+        G.Clear(Color.White);
         DrawFloor();
         DrawMaze(baseX, baseY, crrSpace);
+        this.Pb.Refresh();
         // DrawChest();
         // DrawEnemies();
         // DrawStats();
@@ -160,26 +164,34 @@ public class Game : Form
         }
     }
 
-    private void DrawWall(Space space, float x, float y, int max = 10)
+    //need to fix the wall
+    private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
-        if (max < 0)
+        const int wid = 100;
+        const int hei = 100;
+
+        if (visited is null)
+            visited = new();
+        
+        if (visited.Contains(space))
             return;
+        visited.Add(space);
 
         if (space.Top == null)
-            G.DrawImage(wallHorizontal, x, y);
-        else DrawWall(space.Top, x, y - wallHorizontal.Height, max - 1);
+            G.DrawImage(wallHorizontal, x, y - 5, wid, 10);
+        else DrawWall(space.Top, x, y - hei, visited);
 
         if (space.Bottom == null)
-            G.DrawImage(wallHorizontal, x, y);
-        else DrawWall(space.Bottom, x, y + wallHorizontal.Height, max - 1);
+            G.DrawImage(wallHorizontal, x, y - 5, wid, 10);
+        else DrawWall(space.Bottom, x, y + hei, visited);
 
         if (space.Left == null)
-            G.DrawImage(wallVertical, x, y);
-        else DrawWall(space.Left, x - wallHorizontal.Width, y, max - 1);
+            G.DrawImage(wallHorizontal, x - 5, y, 10, hei);
+        else DrawWall(space.Left, x - wid, y, visited);
 
         if (space.Right == null)
-            G.DrawImage(wallVertical, x, y);
-        else DrawWall(space.Right, x + wallHorizontal.Width, y, max - 1);
+            G.DrawImage(wallHorizontal, x - 5, y, 10, hei);
+        else DrawWall(space.Right, x + wid, y, visited);
     }
 
     private void DrawStats()
@@ -203,12 +215,12 @@ public class Game : Form
         {
             if (Index < speedAnimEnemy)
             {
-                G.DrawImage(enemyAnim[0], 50, 50);
+                G.DrawImage(enemyAnim[0], 500, 500);
                 Index++;
             }
             else
             {
-                G.DrawImage(enemyAnim[1], 50, 50);
+                G.DrawImage(enemyAnim[1], 500, 500);
                 Index++;
                 if (Index > 2 * speedAnimEnemy)
                     Index = 0;
