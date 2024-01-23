@@ -15,14 +15,14 @@ public class Maze
     {
         Maze maze = new Maze();
         var priority = new PriorityQueue<(int i, int j), byte>();
-        byte[,] topgrid = new byte[48, 27];
-        byte[,] rightgrid = new byte[48, 27];
-        Space[,] vertices = new Space[48, 27];
+        byte[,] topgrid = new byte[sx, sy];
+        byte[,] rightgrid = new byte[sx, sy];
+        Space[,] vertices = new Space[sx, sy];
         int verticeCount = 0;
 
-        for (int i = 0; i < 48; i++)
+        for (int i = 0; i < sx; i++)
         {
-            for (int j = 0; j < 27; j++)
+            for (int j = 0; j < sy; j++)
             {
                 topgrid[i, j] = (byte)Random.Shared.Next(255);
                 rightgrid[i, j] = (byte)Random.Shared.Next(255);
@@ -46,8 +46,7 @@ public class Maze
                 var newSpace = new Space
                 {
                     X = i,
-                    Y = j,
-                    Exit = sx == i && sy == j
+                    Y = j
                 };
                 maze.Spaces.Add(newSpace);
                 vertices[i, j] = newSpace;
@@ -55,8 +54,8 @@ public class Maze
             }
             
             byte top = j == 0  || vertices[i, j - 1] is not null ? byte.MaxValue : topgrid[i, j],
-                 bot = j == 26 || vertices[i, j + 1] is not null ? byte.MaxValue : topgrid[i, j + 1],
-                 rig = i == 47 || vertices[i + 1, j] is not null ? byte.MaxValue : rightgrid[i, j],
+                 bot = j == sy - 1 || vertices[i, j + 1] is not null ? byte.MaxValue : topgrid[i, j + 1],
+                 rig = i == sx - 1 || vertices[i + 1, j] is not null ? byte.MaxValue : rightgrid[i, j],
                  lef = i == 0 || vertices[i - 1, j] is not null ? byte.MaxValue : rightgrid[i - 1, j];
             var min = byte.Min(
                 byte.Min(top, bot),
@@ -75,8 +74,8 @@ public class Maze
             var crr = vertices[i, j];
 
             byte top = j == 0  || vertices[i, j - 1] is not null ? byte.MaxValue : topgrid[i, j],
-                 bot = j == 26 || vertices[i, j + 1] is not null ? byte.MaxValue : topgrid[i, j + 1],
-                 rig = i == 47 || vertices[i + 1, j] is not null ? byte.MaxValue : rightgrid[i, j],
+                 bot = j == sy - 1 || vertices[i, j + 1] is not null ? byte.MaxValue : topgrid[i, j + 1],
+                 rig = i == sx - 1 || vertices[i + 1, j] is not null ? byte.MaxValue : rightgrid[i, j],
                  lef = i == 0 || vertices[i - 1, j] is not null ? byte.MaxValue : rightgrid[i - 1, j];
             var min = byte.Min(
                 byte.Min(top, bot),

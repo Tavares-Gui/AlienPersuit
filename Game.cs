@@ -21,10 +21,6 @@ public class Game : Form
 
     public int X { get; set; }
     public int Y { get; set; }
-    public Space Top { get; set; } = null;
-    public Space Left { get; set; } = null;
-    public Space Right { get; set; } = null;
-    public Space Bottom { get; set; } = null;
     public bool Exit { get; set; } = false;
     public float CurrentX { get; set; }
     public float CurrentY { get; set; }
@@ -34,7 +30,6 @@ public class Game : Form
     private Maze maze;
     private Space crrSpace;
 
-    private Image floor = Image.FromFile("./assets/blocks/floor.png");
     private Image floor1 = Image.FromFile("./assets/blocks/floor1.png");
     private Image floor2 = Image.FromFile("./assets/blocks/floor2.png");
     private Image floor3 = Image.FromFile("./assets/blocks/floor3.png");
@@ -46,6 +41,10 @@ public class Game : Form
     private Image floor9 = Image.FromFile("./assets/blocks/floor9.png");
     private Image floor10 = Image.FromFile("./assets/blocks/floor10.png");
     private Image floor11 = Image.FromFile("./assets/blocks/floor11.png");
+    private Image floor12 = Image.FromFile("./assets/blocks/floor12.png");
+    private Image floor13 = Image.FromFile("./assets/blocks/floor13.png");
+    private Image floor14 = Image.FromFile("./assets/blocks/floor14.png");
+    private Image floor15 = Image.FromFile("./assets/blocks/floor15.png");
 
     private Image wallVertical = Image.FromFile("./assets/blocks/wallVertical.png");
     private Image wallHorizontal = Image.FromFile("./assets/blocks/wallHorizontal.png");
@@ -68,12 +67,12 @@ public class Game : Form
         Bitmap.FromFile("./assets/objects/chestOpened.png")
     };
 
-    private float baseX = 200;
-    private float baseY = 200;
+    private float baseX = 400;
+    private float baseY = 400;
 
     public Game()
     {
-        maze = Maze.Prim(3, 3);
+        maze = Maze.Prim(50, 50);
         crrSpace = maze.Spaces
             .OrderByDescending(s => Random.Shared.Next())
             .FirstOrDefault();
@@ -131,13 +130,12 @@ public class Game : Form
 
     public void Tick()
     {
-        G.Clear(Color.White);
-        DrawFloor();
+        G.Clear(Color.Indigo);
         DrawMaze(baseX, baseY, crrSpace);
         this.Pb.Refresh();
         // DrawChest();
         // DrawEnemies();
-        // DrawStats();
+        DrawStats();
         TickCounter++;
     }
 
@@ -149,26 +147,9 @@ public class Game : Form
         DrawWall(space, x, y);
     }
 
-    private void DrawFloor()
-    {
-        var cols = Bmp.Width / floor.Width;
-        var lins = Bmp.Height / floor.Height;
-        for (int i = -1; i < cols + 1; i++)
-        {
-            for (int j = -1; j < lins + 1; j++)
-            {
-                var x = i * floor.Width + baseX % floor.Height;
-                var y = j * floor.Height + baseY % floor.Width;
-                G.DrawImage(floor, new PointF(x, y));
-            }
-        }
-    }
-
-    //need to fix the wall
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
-        const int wid = 100;
-        const int hei = 100;
+        const float size = 350;
 
         if (visited is null)
             visited = new();
@@ -177,21 +158,56 @@ public class Game : Form
             return;
         visited.Add(space);
 
+        var imgFloor = (space.Left, space.Top, space.Right, space.Bottom) switch {
+            (null, null, null, _) => floor11,
+            (null, null, _, null) => floor10,
+            (null, _, null, null) => floor9,
+            (_, null, null, null) => floor8,
+            (null, null, _, _) => floor7,
+            (null, _, _, null) => floor6,
+            (_, _, null, null) => floor5,
+            (_, null, null, _) => floor4,
+            (_, null, _, null) => floor2,
+            (null, _, null, _) => floor1,
+            (_, null, _, _) => floor15,
+            (null, _, _, _) => floor14,
+            (_, _, _, null) => floor13,
+            (_, _, null, _) => floor12,
+            _ => floor3
+        };
+
+        G.DrawImage(imgFloor, x, y, size, size);
+
         if (space.Top == null)
-            G.DrawImage(wallHorizontal, x, y - 5, wid, 10);
-        else DrawWall(space.Top, x, y - hei, visited);
+            G.DrawImage(wallHorizontal, x, y - 5, size, 10);
+        else DrawWall(space.Top, x, y - size, visited);
 
         if (space.Bottom == null)
-            G.DrawImage(wallHorizontal, x, y - 5, wid, 10);
-        else DrawWall(space.Bottom, x, y + hei, visited);
+            G.DrawImage(wallHorizontal, x, y + size - 5, size, 10);
+        else DrawWall(space.Bottom, x, y + size, visited);
 
         if (space.Left == null)
-            G.DrawImage(wallHorizontal, x - 5, y, 10, hei);
-        else DrawWall(space.Left, x - wid, y, visited);
+            G.DrawImage(wallHorizontal, x - 5, y, 10, size);
+        else DrawWall(space.Left, x - size, y, visited);
 
         if (space.Right == null)
-            G.DrawImage(wallHorizontal, x - 5, y, 10, hei);
-        else DrawWall(space.Right, x + wid, y, visited);
+            G.DrawImage(wallHorizontal, x + size - 5, y, 10, size);
+        else DrawWall(space.Right, x + size, y, visited);
+    }
+
+    private void DrawFloor()
+    {
+        var cols = Bmp.Width / floor3.Width;
+        var lins = Bmp.Height / floor3.Height;
+        for (int i = -1; i < cols + 1; i++)
+        {
+            for (int j = -1; j < lins + 1; j++)
+            {
+                var x = i * floor3.Width + baseX % floor3.Height;
+                var y = j * floor3.Height + baseY % floor3.Width;
+                G.DrawImage(floor3, new PointF(x, y));
+            }
+        }
     }
 
     private void DrawStats()
