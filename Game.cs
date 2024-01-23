@@ -15,7 +15,7 @@ public class Game : Form
     public Enemy Enemy { get; set; }
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
-      private Random random = new Random();
+    private Random random = new Random();
 
     public int X { get; set; }
     public int Y { get; set; }
@@ -133,7 +133,7 @@ public class Game : Form
 
     public void Tick()
     {
-        G.Clear(Color.Indigo);
+        G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
         DrawMaze(baseX, baseY, crrSpace);
         // G.DrawImage(filter, 0,0);
         this.Pb.Refresh();
@@ -154,7 +154,7 @@ public class Game : Form
 
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
-        const float wallSize = 10;
+        const float wallSize = 350;
 
         if (visited is null)
             visited = new();
