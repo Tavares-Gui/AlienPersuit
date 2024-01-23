@@ -67,7 +67,7 @@
 - [x] Draw maze
 - [x] Draw wall
 - [x] Draw floor
-- [ ] Draw stats
+- [ ] Draw stats fixed on the screen
 - [ ] Draw chests
 - [ ] Draw enemies
 - [ ] Draw tools

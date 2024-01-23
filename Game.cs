@@ -105,6 +105,7 @@ public class Game : Form
 
             G = Graphics.FromImage(this.Bmp);
             Pb.Image = this.Bmp;
+            G.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             timer.Start();
         };
 
@@ -196,21 +197,6 @@ public class Game : Form
         if (space.Right == null)
             G.DrawImage(wallHorizontal, x + size - 5, y, 10, size);
         else DrawWall(space.Right, x + size, y, visited);
-    }
-
-    private void DrawFloor()
-    {
-        var cols = Bmp.Width / floor3.Width;
-        var lins = Bmp.Height / floor3.Height;
-        for (int i = -1; i < cols + 1; i++)
-        {
-            for (int j = -1; j < lins + 1; j++)
-            {
-                var x = i * floor3.Width + baseX % floor3.Height;
-                var y = j * floor3.Height + baseY % floor3.Width;
-                G.DrawImage(floor3, new PointF(x, y));
-            }
-        }
     }
 
     private void DrawStats()
