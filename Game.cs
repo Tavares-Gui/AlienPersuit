@@ -46,6 +46,8 @@ public class Game : Form
     private Image floor14 = Image.FromFile("./assets/blocks/floor14.png");
     private Image floor15 = Image.FromFile("./assets/blocks/floor15.png");
 
+    // private Image filter = Image.FromFile("./assets/blocks/filter.png");
+
     private Image wallVertical = Image.FromFile("./assets/blocks/wallVertical.png");
     private Image wallHorizontal = Image.FromFile("./assets/blocks/wallHorizontal.png");
 
@@ -132,6 +134,7 @@ public class Game : Form
     {
         G.Clear(Color.Indigo);
         DrawMaze(baseX, baseY, crrSpace);
+        // G.DrawImage(filter, 0,0);
         this.Pb.Refresh();
         // DrawChest();
         // DrawEnemies();
@@ -143,7 +146,7 @@ public class Game : Form
     {
         if (space == null)
             return;
-
+        
         DrawWall(space, x, y);
     }
 
@@ -251,5 +254,5 @@ public class Game : Form
         else G.DrawImage(chestAnim[0], 100, 100);
     }
 
-    private void DrawLantern(){ }
+    private void DrawPlayer(){ }
 }
