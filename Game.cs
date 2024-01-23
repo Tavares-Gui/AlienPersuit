@@ -2,9 +2,7 @@ using System;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 
 public class Game : Form
 {
@@ -71,6 +69,8 @@ public class Game : Form
 
     private float baseX = 400;
     private float baseY = 400;
+
+    Pen pen = new Pen(Color.Red, 5);
 
     public Game()
     {
@@ -139,7 +139,8 @@ public class Game : Form
         this.Pb.Refresh();
         // DrawChest();
         // DrawEnemies();
-        DrawStats();
+        DrawLantern();
+        // DrawStats();
         TickCounter++;
     }
 
@@ -153,7 +154,7 @@ public class Game : Form
 
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
-        const float size = 350;
+        const float wallSize = 10;
 
         if (visited is null)
             visited = new();
@@ -180,23 +181,23 @@ public class Game : Form
             _ => floor3
         };
 
-        G.DrawImage(imgFloor, x, y, size, size);
+        G.DrawImage(imgFloor, x, y, wallSize, wallSize);
 
         if (space.Top == null)
-            G.DrawImage(wallHorizontal, x, y - 5, size, 10);
-        else DrawWall(space.Top, x, y - size, visited);
+            G.DrawImage(wallHorizontal, x, y - 5, wallSize, 10);
+        else DrawWall(space.Top, x, y - wallSize, visited);
 
         if (space.Bottom == null)
-            G.DrawImage(wallHorizontal, x, y + size - 5, size, 10);
-        else DrawWall(space.Bottom, x, y + size, visited);
+            G.DrawImage(wallHorizontal, x, y + wallSize - 5, wallSize, 10);
+        else DrawWall(space.Bottom, x, y + wallSize, visited);
 
         if (space.Left == null)
-            G.DrawImage(wallHorizontal, x - 5, y, 10, size);
-        else DrawWall(space.Left, x - size, y, visited);
+            G.DrawImage(wallHorizontal, x - 5, y, 10, wallSize);
+        else DrawWall(space.Left, x - wallSize, y, visited);
 
         if (space.Right == null)
-            G.DrawImage(wallHorizontal, x + size - 5, y, 10, size);
-        else DrawWall(space.Right, x + size, y, visited);
+            G.DrawImage(wallHorizontal, x + wallSize - 5, y, 10, wallSize);
+        else DrawWall(space.Right, x + wallSize, y, visited);
     }
 
     private void DrawStats()
@@ -240,5 +241,8 @@ public class Game : Form
         else G.DrawImage(chestAnim[0], 100, 100);
     }
 
-    private void DrawPlayer(){ }
+    private void DrawLantern()
+    { 
+        G.DrawEllipse(pen, 490, 490, 490, 490);
+    }
 }
