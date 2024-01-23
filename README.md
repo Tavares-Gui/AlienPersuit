@@ -14,6 +14,7 @@
 ### MAZE
 - [X] Draw maze correctly
 - [X] Put the maze in the correct size
+- [ ] Colision
 
 
 ### PLAYER
