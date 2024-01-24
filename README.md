@@ -8,7 +8,7 @@
 - [x] Walls
 - [x] Floor
 - [x] Portal
-- [ ] Lantern
+- [X] Lantern
 
 
 ### MAZE
