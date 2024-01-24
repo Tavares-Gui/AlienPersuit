@@ -17,9 +17,7 @@ public class Game : Form
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
     private Random random = new Random();
-    public static PointF GeneralPosition { get; set; }= new(0, 0);
-    private PointF playerPosition = new PointF(890, 470);
-    private PointF playerPreviousPosition = PointF.Empty;
+    public static PointF GeneralPosition { get; set; } = new(0, 0);
 
     private Maze maze;
     private Space crrSpace;
@@ -45,8 +43,8 @@ public class Game : Form
     private Image heart = Image.FromFile("./assets/objects/heart.png");
     private Image seed = Image.FromFile("./assets/objects/seed.png");
 
-    private Image chestClosed = Image.FromFile("./assets/chests/chestClosed.png");
-    private Image chestOpened = Image.FromFile("./assets/chests/chestOpened.png");
+    private Image chestClosed = Image.FromFile("./assets/chests/flower1.png");
+    private Image chestOpened = Image.FromFile("./assets/chests/flower2.png");
 
     public Image[] playerAnim = 
     {
@@ -72,8 +70,8 @@ public class Game : Form
 
     public Image[] chestAnim = 
     {
-        Bitmap.FromFile("./assets/chests/chestClosed.png"),
-        Bitmap.FromFile("./assets/chests/chestOpened.png")
+        Bitmap.FromFile("./assets/chests/flower1.png"),
+        Bitmap.FromFile("./assets/chests/flower2.png")
     };
 
     private float baseX = 400;
@@ -165,11 +163,10 @@ public class Game : Form
     {
         G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
         DrawMaze(400 + GeneralPosition.X, 400 + GeneralPosition.Y, crrSpace);
-        DrawLantern(lanternX, lanternY, radius);
         DrawPlayer();
+        DrawLantern(lanternX, lanternY, radius);
         DrawStats();
         this.Pb.Refresh();
-        // DrawChest();
         // DrawEnemies();
         TickCounter++;
     }
@@ -185,6 +182,7 @@ public class Game : Form
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
         const float wallSize = 350;
+        const float chestSize = 250;
 
         if (visited is null)
             visited = new();
@@ -267,13 +265,6 @@ public class Game : Form
                     Index = 0;
             }
         }
-    }
-
-    private void DrawChest()
-    {
-        if (Chest.Open == true)
-            G.DrawImage(chestAnim[1], 100, 100);
-        else G.DrawImage(chestAnim[0], 100, 100);
     }
 
     private void DrawLantern(float x, float y, float radius)

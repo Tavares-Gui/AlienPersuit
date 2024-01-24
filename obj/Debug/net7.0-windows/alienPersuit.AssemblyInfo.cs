@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("alienPersuit")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f9cb318e89a88ecc34c119beb626b65f383440e6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a51b0e468244fe62716559c4468a370ea56dc778")]
 [assembly: System.Reflection.AssemblyProductAttribute("alienPersuit")]
 [assembly: System.Reflection.AssemblyTitleAttribute("alienPersuit")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
