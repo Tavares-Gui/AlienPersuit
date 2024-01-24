@@ -140,7 +140,7 @@ public class Game : Form
     {
         G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
         DrawMaze(baseX, baseY, crrSpace);
-        // DrawLantern(lanternX, lanternY, radius, borderWidth);
+        DrawLantern(lanternX, lanternY, radius, borderWidth);
         DrawPlayer();
         DrawStats();
         this.Pb.Refresh();
@@ -159,7 +159,7 @@ public class Game : Form
 
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
-        const float wallSize = 35;
+        const float wallSize = 350;
 
         if (visited is null)
             visited = new();
