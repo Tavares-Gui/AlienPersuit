@@ -45,9 +45,8 @@ public class Game : Form
     private Image floor15 = Image.FromFile("./assets/blocks/floor15.png");
 
     // private Image filter = Image.FromFile("./assets/blocks/filter.png");
-
-    private Image wallVertical = Image.FromFile("./assets/blocks/wallVertical.png");
-    private Image wallHorizontal = Image.FromFile("./assets/blocks/wallHorizontal.png");
+    
+    private Image wall = Image.FromFile("./assets/blocks/wall.png");
 
     private Image heart = Image.FromFile("./assets/objects/heart.png");
     private Image seed = Image.FromFile("./assets/objects/seed.png");
@@ -136,11 +135,11 @@ public class Game : Form
         G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
         DrawMaze(baseX, baseY, crrSpace);
         // G.DrawImage(filter, 0,0);
+        // DrawLantern(baseX, baseY, 200, 250);
+        DrawStats();
         this.Pb.Refresh();
         // DrawChest();
         // DrawEnemies();
-        DrawLantern();
-        // DrawStats();
         TickCounter++;
     }
 
@@ -184,19 +183,19 @@ public class Game : Form
         G.DrawImage(imgFloor, x, y, wallSize, wallSize);
 
         if (space.Top == null)
-            G.DrawImage(wallHorizontal, x, y - 5, wallSize, 10);
+            G.DrawImage(wall, x, y - 5, wallSize, 10);
         else DrawWall(space.Top, x, y - wallSize, visited);
 
         if (space.Bottom == null)
-            G.DrawImage(wallHorizontal, x, y + wallSize - 5, wallSize, 10);
+            G.DrawImage(wall, x, y + wallSize - 5, wallSize, 10);
         else DrawWall(space.Bottom, x, y + wallSize, visited);
 
         if (space.Left == null)
-            G.DrawImage(wallHorizontal, x - 5, y, 10, wallSize);
+            G.DrawImage(wall, x - 5, y, 10, wallSize);
         else DrawWall(space.Left, x - wallSize, y, visited);
 
         if (space.Right == null)
-            G.DrawImage(wallHorizontal, x + wallSize - 5, y, 10, wallSize);
+            G.DrawImage(wall, x + wallSize - 5, y, 10, wallSize);
         else DrawWall(space.Right, x + wallSize, y, visited);
     }
 
@@ -241,8 +240,13 @@ public class Game : Form
         else G.DrawImage(chestAnim[0], 100, 100);
     }
 
-    private void DrawLantern()
-    { 
-        G.DrawEllipse(pen, 490, 490, 490, 490);
-    }
+    // private void DrawLantern(float x, float y, float radius, float fadeRadius)
+    // {
+    //     for (float i = fadeRadius; i >= 0; i -= 1)
+    //     {
+    //         float alpha = Math.Max(0, 1 - (i / radius));
+    //         Color color = Color.FromArgb((int)(alpha * 255), 0, 0, 0);
+    //         G.FillEllipse(new SolidBrush(color), x - i, y - i, 2 * i, 2 * i);
+    //     }
+    // }
 }
