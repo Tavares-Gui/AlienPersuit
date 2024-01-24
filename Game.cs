@@ -16,14 +16,7 @@ public class Game : Form
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
     private Random random = new Random();
-
-    public int X { get; set; }
-    public int Y { get; set; }
-    public bool Exit { get; set; } = false;
-    public float CurrentX { get; set; }
-    public float CurrentY { get; set; }
-    public float TargetX { get; set; } = 0;
-    public float TargetY { get; set; } = 0;
+    public static PointF GeneralPosition { get; set; }= new(0, 0);
 
     private Maze maze;
     private Space crrSpace;
@@ -124,6 +117,22 @@ public class Game : Form
                 case Keys.Escape:
                     Application.Exit();
                     break;
+
+                case Keys.Up:
+                        GeneralPosition = new(GeneralPosition.X, GeneralPosition.Y + 25);
+                        break;
+
+                case Keys.Left:
+                    GeneralPosition = new(GeneralPosition.X + 25, GeneralPosition.Y);
+                    break;
+
+                case Keys.Down:
+                    GeneralPosition = new(GeneralPosition.X , GeneralPosition.Y - 25);
+                    break;
+
+                case Keys.Right:
+                    GeneralPosition = new(GeneralPosition.X - 25, GeneralPosition.Y);
+                    break;
             }
         };
 
@@ -139,7 +148,7 @@ public class Game : Form
     public void Tick()
     {
         G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
-        DrawMaze(baseX, baseY, crrSpace);
+        DrawMaze(400 + GeneralPosition.X, 400 + GeneralPosition.Y, crrSpace);
         DrawLantern(lanternX, lanternY, radius, borderWidth);
         DrawPlayer();
         DrawStats();
@@ -267,9 +276,3 @@ public class Game : Form
         }
     }
 }
-
-
-
-
-
-//INTERPOLAÇÃO
