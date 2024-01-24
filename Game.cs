@@ -43,8 +43,6 @@ public class Game : Form
     private Image floor13 = Image.FromFile("./assets/blocks/floor13.png");
     private Image floor14 = Image.FromFile("./assets/blocks/floor14.png");
     private Image floor15 = Image.FromFile("./assets/blocks/floor15.png");
-
-    // private Image filter = Image.FromFile("./assets/blocks/filter.png");
     
     private Image wall = Image.FromFile("./assets/blocks/wall.png");
 
@@ -53,6 +51,11 @@ public class Game : Form
 
     private Image chestClosed = Image.FromFile("./assets/objects/chestClosed.png");
     private Image chestOpened = Image.FromFile("./assets/objects/chestOpened.png");
+
+    public Image[] playerAnim = 
+    {
+        Bitmap.FromFile("./assets/player/1down.png")
+    };
 
     public Image[] enemyAnim = 
     {
@@ -137,8 +140,8 @@ public class Game : Form
     {
         G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
         DrawMaze(baseX, baseY, crrSpace);
-        // G.DrawImage(filter, 0,0);
-        DrawLantern(lanternX, lanternY, radius, borderWidth);
+        // DrawLantern(lanternX, lanternY, radius, borderWidth);
+        DrawPlayer();
         DrawStats();
         this.Pb.Refresh();
         // DrawChest();
@@ -156,7 +159,7 @@ public class Game : Form
 
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
-        const float wallSize = 350;
+        const float wallSize = 35;
 
         if (visited is null)
             visited = new();
@@ -215,6 +218,11 @@ public class Game : Form
         G.DrawString(Player.Seeds.ToString(), font, textBrush, new PointF(Pb.Width * 0.10f, Pb.Height * 0.05f));
     }
 
+    private void DrawPlayer()
+    {
+        G.DrawImage(playerAnim[0], Pb.Width / 2, Pb.Height / 2, 150, 150);      
+    }
+
     private void DrawEnemies()
     {
         const int speedAnimEnemy = 6;
@@ -259,3 +267,9 @@ public class Game : Form
         }
     }
 }
+
+
+
+
+
+//INTERPOLAÇÃO

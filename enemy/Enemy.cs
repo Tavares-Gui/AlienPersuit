@@ -10,7 +10,7 @@ public class Enemy
     public float Y { get; set; }
     public float Size { get; set; } = 10;
     public float Speed { get; set; } = 4;
-    public List<Image> img { get; set; }
+    public List<Image> img { get; set; } = new List<Image>();
 
     public void Draw(int enemyLife, int speed, string img1Path, string img2Path)
     {
