@@ -136,18 +136,22 @@ public class Game : Form
 
                 case Keys.Up:
                     GeneralPosition = new(GeneralPosition.X, GeneralPosition.Y + 20);
+                    playerPosition = new PointF(playerPosition.X, playerPosition.Y - 20);
                     break;
 
                 case Keys.Left:
                     GeneralPosition = new(GeneralPosition.X + 20, GeneralPosition.Y);
+                    playerPosition = new PointF(playerPosition.X - 20, playerPosition.Y);
                     break;
 
                 case Keys.Down:
                     GeneralPosition = new(GeneralPosition.X , GeneralPosition.Y - 20);
+                    playerPosition = new PointF(playerPosition.X, playerPosition.Y + 20);
                     break;
 
                 case Keys.Right:
                     GeneralPosition = new(GeneralPosition.X - 20, GeneralPosition.Y);
+                    playerPosition = new PointF(playerPosition.X + 20, playerPosition.Y);
                     break;
             }
         };
@@ -245,7 +249,31 @@ public class Game : Form
 
     private void DrawPlayer()
     {
-        G.DrawImage(playerAnim[0], 890, 470, 150, 150);
+        int frameIndex = 0;
+
+        if (playerPosition != playerPreviousPosition)
+        {
+            float dx = playerPosition.X - playerPreviousPosition.X;
+            float dy = playerPosition.Y - playerPreviousPosition.Y;
+
+            if (Math.Abs(dx) > Math.Abs(dy))
+            {
+                if (dx > 0)
+                    frameIndex = 6;
+                else
+                    frameIndex = 9;
+            }
+            else
+            {
+                if (dy > 0)
+                    frameIndex = 0;
+                else
+                    frameIndex = 3;
+            }
+        }
+
+        G.DrawImage(playerAnim[frameIndex], playerPosition.X, playerPosition.Y, 150, 150);
+        playerPreviousPosition = playerPosition;
     }
 
     private void DrawEnemies()
