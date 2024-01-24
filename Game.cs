@@ -69,7 +69,10 @@ public class Game : Form
     private float baseX = 400;
     private float baseY = 400;
 
-    Pen pen = new Pen(Color.Red, 5);
+    float lanternX = 960;
+    float lanternY = 540;
+    float radius = 1100;
+    float borderWidth = 800;
 
     public Game()
     {
@@ -135,7 +138,7 @@ public class Game : Form
         G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
         DrawMaze(baseX, baseY, crrSpace);
         // G.DrawImage(filter, 0,0);
-        // DrawLantern(baseX, baseY, 200, 250);
+        DrawLantern(lanternX, lanternY, radius, borderWidth);
         DrawStats();
         this.Pb.Refresh();
         // DrawChest();
@@ -240,13 +243,19 @@ public class Game : Form
         else G.DrawImage(chestAnim[0], 100, 100);
     }
 
-    // private void DrawLantern(float x, float y, float radius, float fadeRadius)
-    // {
-    //     for (float i = fadeRadius; i >= 0; i -= 1)
-    //     {
-    //         float alpha = Math.Max(0, 1 - (i / radius));
-    //         Color color = Color.FromArgb((int)(alpha * 255), 0, 0, 0);
-    //         G.FillEllipse(new SolidBrush(color), x - i, y - i, 2 * i, 2 * i);
-    //     }
-    // }
+    private void DrawLantern(float x, float y, float radius, float borderWidth)
+    {
+        float width = radius * 2;
+        float height = radius * 2;
+
+        RectangleF rect = new RectangleF(x - radius, y - radius, width, height);
+
+        for (float i = 0; i <= borderWidth; i += 1)
+        {
+            float alpha = Math.Max(0, 1 - (i / radius));
+            Color color = Color.FromArgb((int)(alpha * 255), 0, 0, 0);
+            RectangleF borderRect = new RectangleF(rect.X + i, rect.Y + i, rect.Width - 2 * i, rect.Height - 2 * i);
+            G.DrawEllipse(new Pen(color, 4), borderRect);
+        }
+    }
 }
