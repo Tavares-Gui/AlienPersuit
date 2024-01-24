@@ -154,7 +154,7 @@ public class Game : Form
 
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
-        const float wallSize = 10;
+        const float wallSize = 350;
 
         if (visited is null)
             visited = new();
