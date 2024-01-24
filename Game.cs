@@ -45,8 +45,8 @@ public class Game : Form
     private Image heart = Image.FromFile("./assets/objects/heart.png");
     private Image seed = Image.FromFile("./assets/objects/seed.png");
 
-    private Image chestClosed = Image.FromFile("./assets/objects/chestClosed.png");
-    private Image chestOpened = Image.FromFile("./assets/objects/chestOpened.png");
+    private Image chestClosed = Image.FromFile("./assets/chests/chestClosed.png");
+    private Image chestOpened = Image.FromFile("./assets/chests/chestOpened.png");
 
     public Image[] playerAnim = 
     {
@@ -72,8 +72,8 @@ public class Game : Form
 
     public Image[] chestAnim = 
     {
-        Bitmap.FromFile("./assets/objects/chestClosed.png"),
-        Bitmap.FromFile("./assets/objects/chestOpened.png")
+        Bitmap.FromFile("./assets/chests/chestClosed.png"),
+        Bitmap.FromFile("./assets/chests/chestOpened.png")
     };
 
     private float baseX = 400;
@@ -82,7 +82,6 @@ public class Game : Form
     float lanternX = 960;
     float lanternY = 540;
     float radius = 1100;
-    float borderWidth = 800;
 
     float playerX = 960;
     float playerY = 540;
@@ -166,7 +165,7 @@ public class Game : Form
     {
         G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
         DrawMaze(400 + GeneralPosition.X, 400 + GeneralPosition.Y, crrSpace);
-        DrawLantern(lanternX, lanternY, radius, borderWidth);
+        DrawLantern(lanternX, lanternY, radius);
         DrawPlayer();
         DrawStats();
         this.Pb.Refresh();
@@ -277,7 +276,7 @@ public class Game : Form
         else G.DrawImage(chestAnim[0], 100, 100);
     }
 
-    private void DrawLantern(float x, float y, float radius, float borderWidth)
+    private void DrawLantern(float x, float y, float radius)
     {
         float width = radius * 2;
         float height = radius * 2;

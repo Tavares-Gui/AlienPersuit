@@ -13,3 +13,17 @@ C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\refint\alienPersui
 C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.pdb
 C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.genruntimeconfig.cache
 C:\Users\disrct\Desktop\alienPersuit\obj\Debug\net7.0-windows\ref\alienPersuit.dll
+C:\Users\Guilherme\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.exe
+C:\Users\Guilherme\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.deps.json
+C:\Users\Guilherme\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.runtimeconfig.json
+C:\Users\Guilherme\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.dll
+C:\Users\Guilherme\Desktop\alienPersuit\bin\Debug\net7.0-windows\alienPersuit.pdb
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.AssemblyInfoInputs.cache
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.AssemblyInfo.cs
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.csproj.CoreCompileInputs.cache
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.dll
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\refint\alienPersuit.dll
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.pdb
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\alienPersuit.genruntimeconfig.cache
+C:\Users\Guilherme\Desktop\alienPersuit\obj\Debug\net7.0-windows\ref\alienPersuit.dll
