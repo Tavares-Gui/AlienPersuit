@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 
 public class Game : Form
@@ -119,7 +120,7 @@ public class Game : Form
 
             G = Graphics.FromImage(this.Bmp);
             Pb.Image = this.Bmp;
-            G.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            G.InterpolationMode = InterpolationMode.NearestNeighbor;
             timer.Start();
         };
 
@@ -136,22 +137,18 @@ public class Game : Form
 
                 case Keys.Up:
                     GeneralPosition = new(GeneralPosition.X, GeneralPosition.Y + 20);
-                    playerPosition = new PointF(playerPosition.X, playerPosition.Y - 20);
                     break;
 
                 case Keys.Left:
                     GeneralPosition = new(GeneralPosition.X + 20, GeneralPosition.Y);
-                    playerPosition = new PointF(playerPosition.X - 20, playerPosition.Y);
                     break;
 
                 case Keys.Down:
                     GeneralPosition = new(GeneralPosition.X , GeneralPosition.Y - 20);
-                    playerPosition = new PointF(playerPosition.X, playerPosition.Y + 20);
                     break;
 
                 case Keys.Right:
                     GeneralPosition = new(GeneralPosition.X - 20, GeneralPosition.Y);
-                    playerPosition = new PointF(playerPosition.X + 20, playerPosition.Y);
                     break;
             }
         };
@@ -249,31 +246,7 @@ public class Game : Form
 
     private void DrawPlayer()
     {
-        int frameIndex = 0;
-
-        if (playerPosition != playerPreviousPosition)
-        {
-            float dx = playerPosition.X - playerPreviousPosition.X;
-            float dy = playerPosition.Y - playerPreviousPosition.Y;
-
-            if (Math.Abs(dx) > Math.Abs(dy))
-            {
-                if (dx > 0)
-                    frameIndex = 6;
-                else
-                    frameIndex = 9;
-            }
-            else
-            {
-                if (dy > 0)
-                    frameIndex = 0;
-                else
-                    frameIndex = 3;
-            }
-        }
-
-        G.DrawImage(playerAnim[frameIndex], playerPosition.X, playerPosition.Y, 150, 150);
-        playerPreviousPosition = playerPosition;
+        G.DrawImage(playerAnim[0], 890, 470, 150, 150);
     }
 
     private void DrawEnemies()
@@ -311,11 +284,17 @@ public class Game : Form
 
         RectangleF rect = new RectangleF(x - radius, y - radius, width, height);
 
-        for (float i = 0; i <= borderWidth; i += 1)
+        for (float dist = 0; dist <= this.Height; dist += 1)
         {
-            float alpha = Math.Max(0, 1 - (i / radius));
-            Color color = Color.FromArgb((int)(alpha * 255), 0, 0, 0);
-            RectangleF borderRect = new RectangleF(rect.X + i, rect.Y + i, rect.Width - 2 * i, rect.Height - 2 * i);
+            var propDist = dist / this.Height;
+            float alpha = 2 * propDist * propDist;
+
+            int aChannel = 255 -
+                (alpha < 0f ? 0 : 
+                alpha > 1f ? 255 :
+                (int)(255 * alpha));
+            Color color = Color.FromArgb(aChannel, 0, 0, 0);
+            RectangleF borderRect = new RectangleF(rect.X + dist, rect.Y + dist, rect.Width - 2 * dist, rect.Height - 2 * dist);
             G.DrawEllipse(new Pen(color, 4), borderRect);
         }
     }
