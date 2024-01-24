@@ -12,11 +12,24 @@ public class Player
     public float Speed { get; set; } = 5;
     public List<Image> img { get; set; } = new List<Image>();
 
-    public void Draw(int playerLife, int seeds, int speed, string img1Path)
+    public void Draw(
+        int playerLife, 
+        int seeds, 
+        int speed,
+        string img1Path, string img2Path, string img3Path, 
+        string img4Path, string img5Path, string img6Path, 
+        string img7Path, string img8Path, string img9Path, 
+        string img10Path, string img11Path, string img12Path
+    )
     {
         this.PlayerLife = playerLife;
         this.Seeds = seeds;
         this.Speed = speed;
-        this.img = new(){Bitmap.FromFile(img1Path)};
+        this.img = new(){
+            Bitmap.FromFile(img1Path), Bitmap.FromFile(img2Path), Bitmap.FromFile(img3Path),
+            Bitmap.FromFile(img4Path), Bitmap.FromFile(img5Path), Bitmap.FromFile(img6Path),
+            Bitmap.FromFile(img7Path), Bitmap.FromFile(img8Path), Bitmap.FromFile(img9Path),
+            Bitmap.FromFile(img10Path), Bitmap.FromFile(img11Path), Bitmap.FromFile(img12Path)
+        };
     }
 }

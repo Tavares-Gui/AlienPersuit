@@ -17,6 +17,8 @@ public class Game : Form
     public int Index { get; set; } = 0;
     private Random random = new Random();
     public static PointF GeneralPosition { get; set; }= new(0, 0);
+    private PointF playerPosition = new PointF(890, 470);
+    private PointF playerPreviousPosition = PointF.Empty;
 
     private Maze maze;
     private Space crrSpace;
@@ -36,7 +38,7 @@ public class Game : Form
     private Image floor13 = Image.FromFile("./assets/blocks/floor13.png");
     private Image floor14 = Image.FromFile("./assets/blocks/floor14.png");
     private Image floor15 = Image.FromFile("./assets/blocks/floor15.png");
-    
+
     private Image wall = Image.FromFile("./assets/blocks/wall.png");
 
     private Image heart = Image.FromFile("./assets/objects/heart.png");
@@ -47,7 +49,18 @@ public class Game : Form
 
     public Image[] playerAnim = 
     {
-        Bitmap.FromFile("./assets/player/1down.png")
+        Bitmap.FromFile("./assets/player/1down.png"),
+        Bitmap.FromFile("./assets/player/2down.png"),
+        Bitmap.FromFile("./assets/player/3down.png"),
+        Bitmap.FromFile("./assets/player/4up.png"),
+        Bitmap.FromFile("./assets/player/5up.png"),
+        Bitmap.FromFile("./assets/player/6up.png"),
+        Bitmap.FromFile("./assets/player/7right.png"),
+        Bitmap.FromFile("./assets/player/8right.png"),
+        Bitmap.FromFile("./assets/player/9right.png"),
+        Bitmap.FromFile("./assets/player/10left.png"),
+        Bitmap.FromFile("./assets/player/11left.png"),
+        Bitmap.FromFile("./assets/player/12left.png"),
     };
 
     public Image[] enemyAnim = 
@@ -69,6 +82,9 @@ public class Game : Form
     float lanternY = 540;
     float radius = 1100;
     float borderWidth = 800;
+
+    float playerX = 960;
+    float playerY = 540;
 
     public Game()
     {
@@ -119,19 +135,19 @@ public class Game : Form
                     break;
 
                 case Keys.Up:
-                        GeneralPosition = new(GeneralPosition.X, GeneralPosition.Y + 25);
-                        break;
+                    GeneralPosition = new(GeneralPosition.X, GeneralPosition.Y + 20);
+                    break;
 
                 case Keys.Left:
-                    GeneralPosition = new(GeneralPosition.X + 25, GeneralPosition.Y);
+                    GeneralPosition = new(GeneralPosition.X + 20, GeneralPosition.Y);
                     break;
 
                 case Keys.Down:
-                    GeneralPosition = new(GeneralPosition.X , GeneralPosition.Y - 25);
+                    GeneralPosition = new(GeneralPosition.X , GeneralPosition.Y - 20);
                     break;
 
                 case Keys.Right:
-                    GeneralPosition = new(GeneralPosition.X - 25, GeneralPosition.Y);
+                    GeneralPosition = new(GeneralPosition.X - 20, GeneralPosition.Y);
                     break;
             }
         };
@@ -198,19 +214,19 @@ public class Game : Form
         G.DrawImage(imgFloor, x, y, wallSize, wallSize);
 
         if (space.Top == null)
-            G.DrawImage(wall, x, y - 5, wallSize, 10);
+            G.DrawImage(wall, x, y - 5, wallSize, 20);
         else DrawWall(space.Top, x, y - wallSize, visited);
 
         if (space.Bottom == null)
-            G.DrawImage(wall, x, y + wallSize - 5, wallSize, 10);
+            G.DrawImage(wall, x, y + wallSize - 5, wallSize, 20);
         else DrawWall(space.Bottom, x, y + wallSize, visited);
 
         if (space.Left == null)
-            G.DrawImage(wall, x - 5, y, 10, wallSize);
+            G.DrawImage(wall, x - 5, y, 20, wallSize);
         else DrawWall(space.Left, x - wallSize, y, visited);
 
         if (space.Right == null)
-            G.DrawImage(wall, x + wallSize - 5, y, 10, wallSize);
+            G.DrawImage(wall, x + wallSize - 5, y, 20, wallSize);
         else DrawWall(space.Right, x + wallSize, y, visited);
     }
 
@@ -229,7 +245,7 @@ public class Game : Form
 
     private void DrawPlayer()
     {
-        G.DrawImage(playerAnim[0], Pb.Width / 2, Pb.Height / 2, 150, 150);      
+        G.DrawImage(playerAnim[0], 890, 470, 150, 150);
     }
 
     private void DrawEnemies()
