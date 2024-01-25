@@ -85,7 +85,7 @@ public class Game : Form
 
     public Game()
     {
-        maze = Maze.Prim(50, 50);
+        maze = Maze.Prim(5, 5);
         crrSpace = maze.Spaces
             .OrderByDescending(s => Random.Shared.Next())
             .FirstOrDefault();
@@ -118,6 +118,8 @@ public class Game : Form
             Pb.Image = this.Bmp;
             G.InterpolationMode = InterpolationMode.NearestNeighbor;
             G.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            Random randNum = new Random();
+            Point chestPosition = new(randNum.Next(Pb.Width), randNum.Next(Pb.Height));
             timer.Start();
         };
 
@@ -179,7 +181,7 @@ public class Game : Form
         Update();
         DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
         DrawPlayer();
-        DrawLantern(lanternX, lanternY, radius);
+        // DrawLantern(lanternX, lanternY, radius);
         DrawStats();
         this.Pb.Refresh();
         // DrawEnemies();
@@ -203,6 +205,9 @@ public class Game : Form
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
         const float wallSize = 350;
+        
+        // G.DrawImage(chestClosed, chestPosition.X, chestPosition.Y);
+
 
         if (visited is null)
             visited = new();
