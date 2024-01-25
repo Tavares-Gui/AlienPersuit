@@ -14,7 +14,7 @@ public class Maze
     private DateTime dt = DateTime.Now;
     private float vx { get; set; }
     private float vy { get; set; }
-    private float BaseAcceleration { get; set; } = 600;
+    private float BaseAcceleration { get; set; } = 2_000;
 
     public void Reset()
     {
@@ -126,6 +126,9 @@ public class Maze
 
     public void Move()
     {
+
+        // oldVars
+
         var now = DateTime.Now;
         var time = now - dt;
         var sec = (float)time.TotalSeconds;
@@ -141,10 +144,11 @@ public class Maze
 
         this.Location = new(Location.X + vx * sec , Location.Y + vy * sec);
 
-        vx *= MathF.Pow(0.001f, sec);
-        vy *= MathF.Pow(0.001f, sec);
+        // resistencia pra parada
+        vx *= MathF.Pow(0.00001f, sec);
+        vy *= MathF.Pow(0.00001f, sec);
 
-        const int max = 600;
+        const int max = 1;
         if (vx > max)
             vx = max;
         else if (vx < -max)
@@ -154,6 +158,10 @@ public class Maze
             vy = max;
         else if (vy < -max)
             vy = -max;
+
+        //Verificacao de Colisao
+
+        //acao pos colisao
     }
 
     public void MoveUp () => Ay = 1;
