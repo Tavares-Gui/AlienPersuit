@@ -16,9 +16,6 @@ public class Maze
     private float vy { get; set; }
     private float BaseAcceleration { get; set; } = 1_500;
 
-    public int slowFrameRate { get; set; } = 0;
-    public int steps { get; set; } = 0;
-
     public void Reset()
     {
         foreach (var space in Spaces)
@@ -176,26 +173,6 @@ public class Maze
     public void StopDown () => Ay = 0;
     public void StopRight () => Ax = 0;
     public void StopLeft () => Ax = 0;
-
-
-
-    // private void AnimatePLayer(int start, int end)
-    // {
-    //     slowFrameRate += 1;
-
-    //     if (slowFrameRate > 3)
-    //     {
-    //         steps++;
-    //         slowFrameRate = 0;
-    //     }
-
-    //     if (steps > end || steps < start)
-    //     {
-    //         steps = start;
-    //     }
-
-    //     this.Sprite = Resources.Current.PlayerSprites[steps];
-    // }
 }
 
 

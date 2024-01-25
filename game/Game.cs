@@ -246,6 +246,8 @@ public class Game : Form
         if (space.Right == null)
             G.DrawImage(wall, x + wallSize - 5, y, 20, wallSize);
         else DrawWall(space.Right, x + wallSize, y, visited);
+
+        // GameObject.CreateHitbox(this.X, this.Y, this.Width, this.Height);
     }
 
     private void DrawStats()
