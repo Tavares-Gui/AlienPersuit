@@ -1,13 +1,13 @@
 ### PIXEL ARTS
 
-- [x] Player
-- [x] Enemies
-- [x] Tool
-- [x] Chests
-- [x] Seeds
-- [x] Walls
-- [x] Floor
-- [x] Portal
+- [X] Player
+- [X] Enemies
+- [X] Tool
+- [X] Chests
+- [X] Seeds
+- [X] Walls
+- [X] Floor
+- [X] Portal
 - [X] Lantern
 
 
@@ -19,7 +19,7 @@
 
 ### PLAYER
 
-- [ ] Walk
+- [X] Walk
 - [ ] Colision
 - [ ] Shoot
 - [ ] Animation
@@ -27,7 +27,7 @@
 
 
 ### MAZE + PLAYER
-- [ ] Maze and player walk together
+- [X] Maze and player walk together
 
 
 ### ENEMIES
@@ -65,10 +65,10 @@
 
 ### GAME SCREEN
 
-- [x] Draw maze
-- [x] Draw wall
-- [x] Draw floor
-- [ ] Draw stats fixed on the screen
+- [X] Draw maze
+- [X] Draw wall
+- [X] Draw floor
+- [X] Draw stats fixed on the screen
 - [ ] Draw chests
 - [ ] Draw enemies
 - [ ] Draw tools

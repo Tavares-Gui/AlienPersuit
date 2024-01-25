@@ -14,7 +14,10 @@ public class Maze
     private DateTime dt = DateTime.Now;
     private float vx { get; set; }
     private float vy { get; set; }
-    private float BaseAcceleration { get; set; } = 2_000;
+    private float BaseAcceleration { get; set; } = 1_500;
+
+    public int slowFrameRate { get; set; } = 0;
+    public int steps { get; set; } = 0;
 
     public void Reset()
     {
@@ -148,7 +151,7 @@ public class Maze
         vx *= MathF.Pow(0.00001f, sec);
         vy *= MathF.Pow(0.00001f, sec);
 
-        const int max = 1;
+        const int max = 60;
         if (vx > max)
             vx = max;
         else if (vx < -max)
@@ -176,7 +179,25 @@ public class Maze
 
 
 
+    // private void AnimatePLayer(int start, int end)
+    // {
+    //     slowFrameRate += 1;
+
+    //     if (slowFrameRate > 3)
+    //     {
+    //         steps++;
+    //         slowFrameRate = 0;
+    //     }
+
+    //     if (steps > end || steps < start)
+    //     {
+    //         steps = start;
+    //     }
+
+    //     this.Sprite = Resources.Current.PlayerSprites[steps];
+    // }
 }
+
 
 public class Space
 {

@@ -17,8 +17,7 @@ public class Game : Form
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
     private Random random = new Random();
-    // public static PointF maze.Location { get; set; } = new(0, 0);
-    //
+    
     private Maze maze;
     private Space crrSpace;
 
@@ -45,7 +44,6 @@ public class Game : Form
 
     private Image chestClosed = Image.FromFile("./assets/chests/flower1.png");
     private Image chestOpened = Image.FromFile("./assets/chests/flower2.png");
-
 
     public Image[] playerAnim = 
     {
@@ -136,22 +134,18 @@ public class Game : Form
 
                 case Keys.Up:
                     maze.MoveUp();
-                    // maze.Location = new(maze.Location.X, maze.Location.Y + 20);
                     break;
 
                 case Keys.Left:
                     maze.MoveLeft();
-                    // maze.Location = new(maze.Location.X + 20, maze.Location.Y);
                     break;
 
                 case Keys.Down:
                     maze.MoveDown();
-                    // maze.Location = new(maze.Location.X , maze.Location.Y - 20);
                     break;
 
                 case Keys.Right:
                     maze.MoveRight();
-                    // maze.Location = new(maze.Location.X - 20, maze.Location.Y);
                     break;
             }
         };
@@ -162,22 +156,18 @@ public class Game : Form
             {
                 case Keys.Up:
                     maze.StopUp();
-                    // maze.Location = new(maze.Location.X, maze.Location.Y + 20);
                     break;
 
                 case Keys.Left:
                     maze.StopLeft();
-                    // maze.Location = new(maze.Location.X + 20, maze.Location.Y);
                     break;
 
                 case Keys.Down:
                     maze.StopDown();
-                    // maze.Location = new(maze.Location.X , maze.Location.Y - 20);
                     break;
 
                 case Keys.Right:
                     maze.StopRight();
-                    // maze.Location = new(maze.Location.X - 20, maze.Location.Y);
                     break;
             }
         };
