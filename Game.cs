@@ -17,8 +17,8 @@ public class Game : Form
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
     private Random random = new Random();
-    public static PointF GeneralPosition { get; set; } = new(0, 0);
-
+    // public static PointF maze.Location { get; set; } = new(0, 0);
+    //
     private Maze maze;
     private Space crrSpace;
 
@@ -45,6 +45,7 @@ public class Game : Form
 
     private Image chestClosed = Image.FromFile("./assets/chests/flower1.png");
     private Image chestOpened = Image.FromFile("./assets/chests/flower2.png");
+
 
     public Image[] playerAnim = 
     {
@@ -118,6 +119,7 @@ public class Game : Form
             G = Graphics.FromImage(this.Bmp);
             Pb.Image = this.Bmp;
             G.InterpolationMode = InterpolationMode.NearestNeighbor;
+            G.PixelOffsetMode = PixelOffsetMode.HighQuality;
             timer.Start();
         };
 
@@ -133,36 +135,59 @@ public class Game : Form
                     break;
 
                 case Keys.Up:
-                    GeneralPosition = new(GeneralPosition.X, GeneralPosition.Y + 20);
+                    maze.MoveUp();
+                    // maze.Location = new(maze.Location.X, maze.Location.Y + 20);
                     break;
 
                 case Keys.Left:
-                    GeneralPosition = new(GeneralPosition.X + 20, GeneralPosition.Y);
+                    maze.MoveLeft();
+                    // maze.Location = new(maze.Location.X + 20, maze.Location.Y);
                     break;
 
                 case Keys.Down:
-                    GeneralPosition = new(GeneralPosition.X , GeneralPosition.Y - 20);
+                    maze.MoveDown();
+                    // maze.Location = new(maze.Location.X , maze.Location.Y - 20);
                     break;
 
                 case Keys.Right:
-                    GeneralPosition = new(GeneralPosition.X - 20, GeneralPosition.Y);
+                    maze.MoveRight();
+                    // maze.Location = new(maze.Location.X - 20, maze.Location.Y);
                     break;
             }
         };
 
-        // KeyUp += (o, e) =>
-        // {
-        //     switch (e.KeyCode)
-        //     {
+        KeyUp += (o, e) =>
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    maze.StopUp();
+                    // maze.Location = new(maze.Location.X, maze.Location.Y + 20);
+                    break;
 
-        //     }
-        // };
+                case Keys.Left:
+                    maze.StopLeft();
+                    // maze.Location = new(maze.Location.X + 20, maze.Location.Y);
+                    break;
+
+                case Keys.Down:
+                    maze.StopDown();
+                    // maze.Location = new(maze.Location.X , maze.Location.Y - 20);
+                    break;
+
+                case Keys.Right:
+                    maze.StopRight();
+                    // maze.Location = new(maze.Location.X - 20, maze.Location.Y);
+                    break;
+            }
+        };
     }
 
     public void Tick()
     {
         G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
-        DrawMaze(400 + GeneralPosition.X, 400 + GeneralPosition.Y, crrSpace);
+        Update();
+        DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
         DrawPlayer();
         DrawLantern(lanternX, lanternY, radius);
         DrawStats();
@@ -170,6 +195,12 @@ public class Game : Form
         // DrawEnemies();
         TickCounter++;
     }
+
+    public void Update()
+    {
+        maze.Move();
+    }
+
 
     private void DrawMaze(float x, float y, Space space)
     {
@@ -182,7 +213,6 @@ public class Game : Form
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
         const float wallSize = 350;
-        const float chestSize = 250;
 
         if (visited is null)
             visited = new();
