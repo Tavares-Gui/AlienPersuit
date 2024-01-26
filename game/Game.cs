@@ -183,7 +183,7 @@ public class Game : Form
         Update();
         DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
         DrawPlayer();
-        // DrawLantern(lanternX, lanternY, radius); 
+        DrawLantern(lanternX, lanternY, radius); 
         DrawStats();
         this.Pb.Refresh();
         // DrawEnemies();
