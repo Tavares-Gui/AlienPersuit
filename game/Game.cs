@@ -11,13 +11,14 @@ public class Game : Form
     public Bitmap Bmp { get; set; }
     public Timer Tmr { get; set; }
     public PictureBox Pb { get; set; }
-    public int TickCounter { get; set; }
     public Player Player { get; set; }
     public Enemy Enemy { get; set; }
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
     private Random random = new Random();
-    
+    public Pen pen { get; set; }
+    public bool chestCreated { get; set; } = false;
+
     private Maze maze;
     private Space crrSpace;
 
@@ -45,7 +46,7 @@ public class Game : Form
     private Image chestClosed = Image.FromFile("./assets/chests/flower1.png");
     private Image chestOpened = Image.FromFile("./assets/chests/flower2.png");
 
-    public Image[] playerAnim = 
+    public Image[] playerAnim =
     {
         Bitmap.FromFile("./assets/player/1down.png"),
         Bitmap.FromFile("./assets/player/2down.png"),
@@ -61,13 +62,13 @@ public class Game : Form
         Bitmap.FromFile("./assets/player/12left.png"),
     };
 
-    public Image[] enemyAnim = 
+    public Image[] enemyAnim =
     {
         Bitmap.FromFile("./assets/enemy/enemy1.png"),
         Bitmap.FromFile("./assets/enemy/enemy2.png")
     };
 
-    public Image[] chestAnim = 
+    public Image[] chestAnim =
     {
         Bitmap.FromFile("./assets/chests/flower1.png"),
         Bitmap.FromFile("./assets/chests/flower2.png")
@@ -85,7 +86,8 @@ public class Game : Form
 
     public Game()
     {
-        maze = Maze.Prim(5, 5);
+        // Collisions.New();
+        maze = Maze.Prim(50, 50);
         crrSpace = maze.Spaces
             .OrderByDescending(s => Random.Shared.Next())
             .FirstOrDefault();
@@ -177,15 +179,14 @@ public class Game : Form
 
     public void Tick()
     {
-        G.Clear(Color.FromArgb(0xFF, 0x41, 0x98, 0x0A));
+        G.Clear(Color.Black);
         Update();
         DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
         DrawPlayer();
-        // DrawLantern(lanternX, lanternY, radius);
+        // DrawLantern(lanternX, lanternY, radius); 
         DrawStats();
         this.Pb.Refresh();
         // DrawEnemies();
-        TickCounter++;
     }
 
     public void Update()
@@ -198,25 +199,26 @@ public class Game : Form
     {
         if (space == null)
             return;
-        
         DrawWall(space, x, y);
     }
 
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
         const float wallSize = 350;
-        
-        // G.DrawImage(chestClosed, chestPosition.X, chestPosition.Y);
+        // Random randPosition = new Random();
+        // var randX = randPosition.Next((int)x);
+        // var randY = randPosition.Next((int)y);
 
-
+        G.DrawRectangle(Pens.Red, new RectangleF(890 + 75 / 2, 470 + 75 / 2, 75, 75));
         if (visited is null)
             visited = new();
-        
+
         if (visited.Contains(space))
             return;
         visited.Add(space);
 
-        var imgFloor = (space.Left, space.Top, space.Right, space.Bottom) switch {
+        var imgFloor = (space.Left, space.Top, space.Right, space.Bottom) switch
+        {
             (null, null, null, _) => floor11,
             (null, null, _, null) => floor10,
             (null, _, null, null) => floor9,
@@ -233,26 +235,58 @@ public class Game : Form
             (_, _, null, _) => floor12,
             _ => floor3
         };
-
         G.DrawImage(imgFloor, x, y, wallSize, wallSize);
 
         if (space.Top == null)
+        {
             G.DrawImage(wall, x, y - 5, wallSize, 20);
-        else DrawWall(space.Top, x, y - wallSize, visited);
+            G.DrawRectangle(Pens.Red, new RectangleF(x, y - 5, wallSize, 20));
+    
+        }
+        else
+        {
+            DrawWall(space.Top, x, y - wallSize, visited);
+            G.DrawRectangle(Pens.Red, new RectangleF(x, y - 5, wallSize, 20));
+        }
 
         if (space.Bottom == null)
+        {
             G.DrawImage(wall, x, y + wallSize - 5, wallSize, 20);
-        else DrawWall(space.Bottom, x, y + wallSize, visited);
+            G.DrawRectangle(Pens.Red, new RectangleF(x, y + wallSize - 5, wallSize, 20));
+        }
+        else
+        {
+            DrawWall(space.Bottom, x, y + wallSize, visited);
+            G.DrawRectangle(Pens.Red, new RectangleF(x, y + wallSize - 5, wallSize, 20));
+        }
 
         if (space.Left == null)
+        {
             G.DrawImage(wall, x - 5, y, 20, wallSize);
-        else DrawWall(space.Left, x - wallSize, y, visited);
+            G.DrawRectangle(Pens.Red, new RectangleF(x - 5, y, 20, wallSize));
+        }
+        else
+        {
+            DrawWall(space.Left, x - wallSize, y, visited);
+            G.DrawRectangle(Pens.Red, new RectangleF(x - 5, y, 20, wallSize));
+        }
 
         if (space.Right == null)
+        {
             G.DrawImage(wall, x + wallSize - 5, y, 20, wallSize);
-        else DrawWall(space.Right, x + wallSize, y, visited);
+            G.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
+        }
+        else
+        {
+            DrawWall(space.Right, x + wallSize, y, visited);
+            G.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
+        }
 
-        // GameObject.CreateHitbox(this.X, this.Y, this.Width, this.Height);
+        // if (chestCreated == false)
+        // {
+        //     G.DrawImage(chestClosed, randX, randY, 250, 250);
+        //     chestCreated = true;
+        // }
     }
 
     private void DrawStats()
@@ -299,7 +333,7 @@ public class Game : Form
         float width = radius * 2;
         float height = radius * 2;
 
-        RectangleF rect = new RectangleF(x - radius, y - radius, width, height);
+        RectangleF rect = new(x - radius, y - radius, width, height);
 
         for (float dist = 0; dist <= this.Height; dist += 1)
         {
@@ -307,11 +341,11 @@ public class Game : Form
             float alpha = 2 * propDist * propDist;
 
             int aChannel = 255 -
-                (alpha < 0f ? 0 : 
+                (alpha < 0f ? 0 :
                 alpha > 1f ? 255 :
                 (int)(255 * alpha));
             Color color = Color.FromArgb(aChannel, 0, 0, 0);
-            RectangleF borderRect = new RectangleF(rect.X + dist, rect.Y + dist, rect.Width - 2 * dist, rect.Height - 2 * dist);
+            RectangleF borderRect = new(rect.X + dist, rect.Y + dist, rect.Width - 2 * dist, rect.Height - 2 * dist);
             G.DrawEllipse(new Pen(color, 4), borderRect);
         }
     }

@@ -63,8 +63,8 @@ public class Maze
                 vertices[i, j] = newSpace;
                 verticeCount++;
             }
-            
-            byte top = j == 0  || vertices[i, j - 1] is not null ? byte.MaxValue : topgrid[i, j],
+
+            byte top = j == 0 || vertices[i, j - 1] is not null ? byte.MaxValue : topgrid[i, j],
                  bot = j == sy - 1 || vertices[i, j + 1] is not null ? byte.MaxValue : topgrid[i, j + 1],
                  rig = i == sx - 1 || vertices[i + 1, j] is not null ? byte.MaxValue : rightgrid[i, j],
                  lef = i == 0 || vertices[i - 1, j] is not null ? byte.MaxValue : rightgrid[i - 1, j];
@@ -81,10 +81,10 @@ public class Maze
         }
 
         void connect(int i, int j)
-        {   
+        {
             var crr = vertices[i, j];
 
-            byte top = j == 0  || vertices[i, j - 1] is not null ? byte.MaxValue : topgrid[i, j],
+            byte top = j == 0 || vertices[i, j - 1] is not null ? byte.MaxValue : topgrid[i, j],
                  bot = j == sy - 1 || vertices[i, j + 1] is not null ? byte.MaxValue : topgrid[i, j + 1],
                  rig = i == sx - 1 || vertices[i + 1, j] is not null ? byte.MaxValue : rightgrid[i, j],
                  lef = i == 0 || vertices[i - 1, j] is not null ? byte.MaxValue : rightgrid[i - 1, j];
@@ -94,7 +94,7 @@ public class Maze
             );
             if (min == byte.MaxValue)
                 return;
-            
+
             if (min == top)
             {
                 var newSpace = add(i, j - 1);
@@ -126,8 +126,8 @@ public class Maze
 
     public void Move()
     {
-
         // oldVars
+        var oldLocation = this.Location;
 
         var now = DateTime.Now;
         var time = now - dt;
@@ -142,7 +142,7 @@ public class Maze
             vy += (float)(Ay / magnitude) * BaseAcceleration * sec;
         }
 
-        this.Location = new(Location.X + vx * sec , Location.Y + vy * sec);
+        this.Location = new(Location.X + vx * sec, Location.Y + vy * sec);
 
         // resistencia pra parada
         vx *= MathF.Pow(0.00001f, sec);
@@ -159,20 +159,31 @@ public class Maze
         else if (vy < -max)
             vy = -max;
 
-        //Verificacao de Colisao
+        // if (!Collisions.Current.CheckCollisions(Maze))
+        // {
+        //     // MessageBox.Show("ff");
+        //     return;
+        // }
+
+        // MessageBox.Show($"x: {Location.X} y: {Location.Y}");
 
         //acao pos colisao
+        // const float energyLoss = 0.2f;
+        // vx = -vx * energyLoss;
+        // vy = -vy * energyLoss;
+
+        // this.Location = oldLocation;
     }
 
-    public void MoveUp () => Ay = 1;
-    public void MoveDown () => Ay = -1;
-    public void MoveRight () => Ax = -1;
-    public void MoveLeft () => Ax = 1;
+    public void MoveUp() => Ay = 1;
+    public void MoveDown() => Ay = -1;
+    public void MoveRight() => Ax = -1;
+    public void MoveLeft() => Ax = 1;
 
-    public void StopUp () => Ay = 0;
-    public void StopDown () => Ay = 0;
-    public void StopRight () => Ax = 0;
-    public void StopLeft () => Ax = 0;
+    public void StopUp() => Ay = 0;
+    public void StopDown() => Ay = 0;
+    public void StopRight() => Ax = 0;
+    public void StopLeft() => Ax = 0;
 }
 
 
