@@ -18,6 +18,7 @@ public class Game : Form
     private Random random = new Random();
     public Pen pen { get; set; }
     public bool chestCreated { get; set; } = false;
+    public bool enemiesCreated { get; set; } = false;
 
     private Maze maze;
     private Space crrSpace;
@@ -62,12 +63,6 @@ public class Game : Form
         Bitmap.FromFile("./assets/player/12left.png"),
     };
 
-    public Image[] enemyAnim =
-    {
-        Bitmap.FromFile("./assets/enemy/enemy1.png"),
-        Bitmap.FromFile("./assets/enemy/enemy2.png")
-    };
-
     public Image[] chestAnim =
     {
         Bitmap.FromFile("./assets/chests/flower1.png"),
@@ -87,7 +82,7 @@ public class Game : Form
     public Game()
     {
         // Collisions.New();
-        maze = Maze.Prim(50, 50);
+        maze = Maze.Prim(3, 3);
         crrSpace = maze.Spaces
             .OrderByDescending(s => Random.Shared.Next())
             .FirstOrDefault();
@@ -98,7 +93,6 @@ public class Game : Form
         };
         this.Tmr = timer;
         this.Player = new();
-        this.Enemy = new();
         this.Chest = new();
 
         this.Pb = new()
@@ -205,9 +199,9 @@ public class Game : Form
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
         const float wallSize = 350;
-        // Random randPosition = new Random();
-        // var randX = randPosition.Next((int)x);
-        // var randY = randPosition.Next((int)y);
+        Random randPosition = new Random();
+        var randX = randPosition.Next((int)x);
+        var randY = randPosition.Next((int)y);
 
         G.DrawRectangle(Pens.Red, new RectangleF(890 + 75 / 2, 470 + 75 / 2, 75, 75));
         if (visited is null)
@@ -305,27 +299,6 @@ public class Game : Form
     private void DrawPlayer()
     {
         G.DrawImage(playerAnim[0], 890, 470, 150, 150);
-    }
-
-    private void DrawEnemies()
-    {
-        const int speedAnimEnemy = 6;
-
-        if (Enemy.EnemyLife > 0)
-        {
-            if (Index < speedAnimEnemy)
-            {
-                G.DrawImage(enemyAnim[0], 500, 500);
-                Index++;
-            }
-            else
-            {
-                G.DrawImage(enemyAnim[1], 500, 500);
-                Index++;
-                if (Index > 2 * speedAnimEnemy)
-                    Index = 0;
-            }
-        }
     }
 
     private void DrawLantern(float x, float y, float radius)
