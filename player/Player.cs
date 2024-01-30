@@ -4,13 +4,12 @@ using System.Drawing;
 
 public class Player
 {
-    public int PlayerLife { get; set; } = 5;
-    public int Seeds { get; set; } = 4;
-    public int SeedSpeed { get; set; }
+    public int PlayerLife { get; set; } = 0;
+    public int PlayerDamage { get; set; } = 0;
+    public int Seeds { get; set; } = 0;
     public int Tools { get; set; } = 0;
     public float Vx { get; set; }
     public float Vy { get; set; }
-    public float Speed { get; set; }
     public List<Image> img { get; set; } = new List<Image>();
 
     public static Image[] playerAnim =
@@ -32,7 +31,6 @@ public class Player
     public void Draw(
         int playerLife, 
         int seeds, 
-        int speed,
         string img1Path, string img2Path, string img3Path, 
         string img4Path, string img5Path, string img6Path, 
         string img7Path, string img8Path, string img9Path, 
@@ -41,7 +39,6 @@ public class Player
     {
         this.PlayerLife = playerLife;
         this.Seeds = seeds;
-        this.Speed = speed;
         this.img = new(){
             Bitmap.FromFile(img1Path), Bitmap.FromFile(img2Path), Bitmap.FromFile(img3Path),
             Bitmap.FromFile(img4Path), Bitmap.FromFile(img5Path), Bitmap.FromFile(img6Path),
