@@ -15,7 +15,7 @@ public class Game : Form
     public Enemy Enemy { get; set; }
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
-    private Random random = new Random();
+    Random randPosition = new Random();
     public Pen pen { get; set; }
     public bool chestCreated { get; set; } = false;
     public bool enemiesCreated { get; set; } = false;
@@ -177,7 +177,8 @@ public class Game : Form
         Update();
         DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
         DrawPlayer();
-        DrawLantern(lanternX, lanternY, radius); 
+        DrawEnemies();
+        // DrawLantern(lanternX, lanternY, radius); 
         DrawStats();
         this.Pb.Refresh();
         // DrawEnemies();
@@ -199,9 +200,9 @@ public class Game : Form
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
         const float wallSize = 350;
-        Random randPosition = new Random();
-        var randX = randPosition.Next((int)x);
-        var randY = randPosition.Next((int)y);
+        // Random randPosition = new Random();
+        // var randX = randPosition.Next((int)x);
+        // var randY = randPosition.Next((int)y);
 
         G.DrawRectangle(Pens.Red, new RectangleF(890 + 75 / 2, 470 + 75 / 2, 75, 75));
         if (visited is null)
@@ -299,6 +300,22 @@ public class Game : Form
     private void DrawPlayer()
     {
         G.DrawImage(playerAnim[0], 890, 470, 150, 150);
+    }
+
+    private void DrawEnemies()
+    {
+        if (enemiesCreated == false)
+        {
+            for (int i = 0; i < Enemy.enemies.Length; i++)
+            {
+                var randX = randPosition.Next();
+                var randY = randPosition.Next();
+
+                G.DrawImage(Enemy.enemies[i], randX, randY, 200, 200);
+            }
+
+            enemiesCreated = true;
+        }
     }
 
     private void DrawLantern(float x, float y, float radius)
