@@ -44,8 +44,9 @@
 - [ ] Generate chest position randomly
 - [ ] Colision
 - [ ] Open the chest
-- [ ] Good reward
-- [ ] Bad reward
+- [X] Good reward
+- [X] Bad reward
+- [ ] Apply the rewards to affect the game
 
 
 ### PORTAL
