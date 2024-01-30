@@ -36,7 +36,7 @@ public class Game : Form
     public Game()
     {
         // Collisions.New();
-        maze = Maze.Prim(3, 3);
+        maze = Maze.Prim(50, 50);
         crrSpace = maze.Spaces
             .OrderByDescending(s => Random.Shared.Next())
             .FirstOrDefault();
@@ -47,7 +47,6 @@ public class Game : Form
         };
         this.Tmr = timer;
         this.Player = new();
-        this.Chest = new();
 
         this.Pb = new()
         {
@@ -66,8 +65,10 @@ public class Game : Form
 
             G = Graphics.FromImage(this.Bmp);
             Pb.Image = this.Bmp;
+            // G.CompositingQuality = CompositingQuality.AssumeLinear;
             G.InterpolationMode = InterpolationMode.NearestNeighbor;
             G.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            // G.SmoothingMode = SmoothingMode.HighSpeed;
             Random randNum = new Random();
             Point chestPosition = new(randNum.Next(Pb.Width), randNum.Next(Pb.Height));
             timer.Start();
@@ -130,9 +131,9 @@ public class Game : Form
         G.Clear(Color.Black);
         Update();
         DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
-        DrawChests();
+        // DrawChests();
         DrawPlayer();
-        DrawEnemies();
+        // DrawEnemies();
         // DrawLantern(lanternX, lanternY, radius); 
         DrawStats();
         this.Pb.Refresh();
@@ -249,28 +250,30 @@ public class Game : Form
 
     private void DrawEnemies()
     {
-        // foreach (Image enemy in Enemy.enemies)
-        // {
-        //     int randX = randPosition.Next(0, Pb.Width - 200);
-        //     int randY = randPosition.Next(0, Pb.Height - 200);
+        foreach (Enemy enemy in Enemy.Enemies)
+        {
+            int randX = randPosition.Next(0, Pb.Width - (int)enemy.Size);
+            int randY = randPosition.Next(0, Pb.Height - (int)enemy.Size);
 
-        //     G.DrawImage(enemy, randX, randY, 200, 200);
-        // }
-
-        G.DrawImage(Enemy.enemies[8], 500, 500, 400, 200);
+            if (enemy.img.Count > 0)
+            {
+                G.DrawImage(enemy.img[0], new RectangleF(randX, randY, (int)enemy.Size, (int)enemy.Size));
+            }
+        }
     }
 
     private void DrawChests()
     {
-        // foreach (Image chest in Chest.chest)
-        // {
-        //     int randX = randPosition.Next(0, Pb.Width - 200);
-        //     int randY = randPosition.Next(0, Pb.Height - 200);
+        foreach (Chest chest in Chest.Chests)
+        {
+            int randX = randPosition.Next(0, Pb.Width - (int)chest.Size);
+            int randY = randPosition.Next(0, Pb.Height - (int)chest.Size);
 
-        //     G.DrawImage(chest, randX, randY, 200, 200);
-        // }
-
-        G.DrawImage(Chest.chest[0], 800, 800, 200, 200);
+            if (chest.img.Count > 0)
+            {
+                G.DrawImage(chest.img[0], new RectangleF(randX, randY, (int)chest.Size, (int)chest.Size));
+            }
+        }
     }
 
     private void DrawLantern(float x, float y, float radius)

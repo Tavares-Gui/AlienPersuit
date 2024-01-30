@@ -4,12 +4,13 @@ using System.Drawing;
 
 public class Player
 {
-    public int PlayerLife { get; set; } = 3;
+    public int PlayerLife { get; set; } = 5;
     public int Seeds { get; set; } = 4;
-    public int Tools { get; set; }
+    public int SeedSpeed { get; set; }
+    public int Tools { get; set; } = 0;
     public float Vx { get; set; }
     public float Vy { get; set; }
-    public float Speed { get; set; } = 5;
+    public float Speed { get; set; }
     public List<Image> img { get; set; } = new List<Image>();
 
     public static Image[] playerAnim =

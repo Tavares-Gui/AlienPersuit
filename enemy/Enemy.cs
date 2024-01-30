@@ -10,47 +10,28 @@ public class Enemy
     public float EnemySpeed { get; set; } = 0;
     public float X { get; set; }
     public float Y { get; set; }
-    public float Size { get; set; } = 10;
+    public float Size { get; set; } = 200;
     public List<Image> img { get; set; } = new List<Image>();
 
-    public static Image[] enemies =
+    public Enemy(Image img ,int enemyLife, int enemySpeed, int enemyDamage)
     {
-        Bitmap.FromFile("./assets/enemy/weak/alisson.png"),
-        Bitmap.FromFile("./assets/enemy/weak/fer.png"),
-        Bitmap.FromFile("./assets/enemy/weak/moll.png"),
-        Bitmap.FromFile("./assets/enemy/weak/dom.png"),
-        Bitmap.FromFile("./assets/enemy/weak/hamilton.png"),
-        Bitmap.FromFile("./assets/enemy/strong/trevisan.png"),
-        Bitmap.FromFile("./assets/enemy/strong/domDOr.png"),
-        Bitmap.FromFile("./assets/enemy/strong/queila.png"),
-        Bitmap.FromFile("./assets/enemy/strong/marcao.png"),
-        Bitmap.FromFile("./assets/enemy/strong/hamiltonDOr.png")
-    };
-
-    public void Draw
-    (
-        int enemyLife, 
-        int enemySpeed,
-        int enemyDamage, 
-        string img1Path, 
-        string img2Path,
-        string img3Path,
-        string img4Path,
-        string img5Path,
-        string img6Path,
-        string img7Path,
-        string img8Path,
-        string img9Path,
-        string img10Path
-    )
-    {
-        this.EnemyLife = enemyLife;
-        this.EnemySpeed = enemySpeed;
-        this.EnemyDamage = enemyDamage;
-        this.img = new(){
-            Bitmap.FromFile(img1Path), Bitmap.FromFile(img2Path), Bitmap.FromFile(img3Path), Bitmap.FromFile(img4Path),
-            Bitmap.FromFile(img5Path), Bitmap.FromFile(img6Path), Bitmap.FromFile(img7Path), Bitmap.FromFile(img8Path),
-            Bitmap.FromFile(img9Path), Bitmap.FromFile(img10Path)
-        };
+        this.img.Add(img);
+        EnemyLife = enemyLife;
+        EnemySpeed = enemySpeed;
+        EnemyDamage = enemyDamage;
     }
+
+    public static List<Enemy> Enemies { get; set; } = new List<Enemy>
+    {
+        new Enemy(Bitmap.FromFile("./assets/enemy/weak/alisson.png"), 3, 4, 1),
+        new Enemy(Bitmap.FromFile("./assets/enemy/weak/fer.png"), 4, 6, 1),
+        new Enemy(Bitmap.FromFile("./assets/enemy/weak/moll.png"), 5, 4, 1),
+        new Enemy(Bitmap.FromFile("./assets/enemy/weak/dom.png"), 4, 4, 2),
+        new Enemy(Bitmap.FromFile("./assets/enemy/weak/hamilton.png"), 1, 1, 1),
+        new Enemy(Bitmap.FromFile("./assets/enemy/strong/trevisan.png"), 7, 4, 7),
+        new Enemy(Bitmap.FromFile("./assets/enemy/strong/domDOr.png"), 7, 6, 8),
+        new Enemy(Bitmap.FromFile("./assets/enemy/strong/queila.png"), 8, 7, 9),
+        new Enemy(Bitmap.FromFile("./assets/enemy/strong/marcao.png"), 7, 6, 10),
+        new Enemy(Bitmap.FromFile("./assets/enemy/strong/hamiltonDOr.png"), 10, 10, 10)
+    };
 }
