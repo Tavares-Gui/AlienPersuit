@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
-public class Blocks
+public class Images
 {
     public List<Image> img { get; set; } = new List<Image>();
 

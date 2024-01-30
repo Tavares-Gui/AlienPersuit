@@ -165,27 +165,27 @@ public class Game : Form
 
         var imgFloor = (space.Left, space.Top, space.Right, space.Bottom) switch
         {
-            (null, null, null, _) => Blocks.floors[10],
-            (null, null, _, null) => Blocks.floors[9],
-            (null, _, null, null) => Blocks.floors[8],
-            (_, null, null, null) => Blocks.floors[7],
-            (null, null, _, _) => Blocks.floors[6],
-            (null, _, _, null) => Blocks.floors[5],
-            (_, _, null, null) => Blocks.floors[4],
-            (_, null, null, _) => Blocks.floors[3],
-            (_, null, _, null) => Blocks.floors[1],
-            (null, _, null, _) => Blocks.floors[0],
-            (_, null, _, _) => Blocks.floors[14],
-            (null, _, _, _) => Blocks.floors[13],
-            (_, _, _, null) => Blocks.floors[12],
-            (_, _, null, _) => Blocks.floors[11],
-            _ => Blocks.floors[2]
+            (null, null, null, _) => Images.floors[10],
+            (null, null, _, null) => Images.floors[9],
+            (null, _, null, null) => Images.floors[8],
+            (_, null, null, null) => Images.floors[7],
+            (null, null, _, _) => Images.floors[6],
+            (null, _, _, null) => Images.floors[5],
+            (_, _, null, null) => Images.floors[4],
+            (_, null, null, _) => Images.floors[3],
+            (_, null, _, null) => Images.floors[1],
+            (null, _, null, _) => Images.floors[0],
+            (_, null, _, _) => Images.floors[14],
+            (null, _, _, _) => Images.floors[13],
+            (_, _, _, null) => Images.floors[12],
+            (_, _, null, _) => Images.floors[11],
+            _ => Images.floors[2]
         };
         G.DrawImage(imgFloor, x, y, wallSize, wallSize);
 
         if (space.Top == null)
         {
-            G.DrawImage(Blocks.wall[0], x, y - 5, wallSize, 20);
+            G.DrawImage(Images.wall[0], x, y - 5, wallSize, 20);
             G.DrawRectangle(Pens.Red, new RectangleF(x, y - 5, wallSize, 20));
 
         }
@@ -197,7 +197,7 @@ public class Game : Form
 
         if (space.Bottom == null)
         {
-            G.DrawImage(Blocks.wall[0], x, y + wallSize - 5, wallSize, 20);
+            G.DrawImage(Images.wall[0], x, y + wallSize - 5, wallSize, 20);
             G.DrawRectangle(Pens.Red, new RectangleF(x, y + wallSize - 5, wallSize, 20));
         }
         else
@@ -208,7 +208,7 @@ public class Game : Form
 
         if (space.Left == null)
         {
-            G.DrawImage(Blocks.wall[0], x - 5, y, 20, wallSize);
+            G.DrawImage(Images.wall[0], x - 5, y, 20, wallSize);
             G.DrawRectangle(Pens.Red, new RectangleF(x - 5, y, 20, wallSize));
         }
         else
@@ -219,7 +219,7 @@ public class Game : Form
 
         if (space.Right == null)
         {
-            G.DrawImage(Blocks.wall[0], x + wallSize - 5, y, 20, wallSize);
+            G.DrawImage(Images.wall[0], x + wallSize - 5, y, 20, wallSize);
             G.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
         }
         else
@@ -236,8 +236,8 @@ public class Game : Form
 
         Font font = new("Arial", 12, FontStyle.Bold);
 
-        G.DrawImage(Blocks.stats[0], Pb.Width * 0.01f, Pb.Height * 0.01f);
-        G.DrawImage(Blocks.stats[1], Pb.Width * 0.06f, Pb.Height * 0.01f);
+        G.DrawImage(Images.stats[0], Pb.Width * 0.01f, Pb.Height * 0.01f);
+        G.DrawImage(Images.stats[1], Pb.Width * 0.06f, Pb.Height * 0.01f);
         G.DrawString(Player.PlayerLife.ToString(), font, textBrush, new PointF(Pb.Width * 0.05f, Pb.Height * 0.05f));
         G.DrawString(Player.Seeds.ToString(), font, textBrush, new PointF(Pb.Width * 0.10f, Pb.Height * 0.05f));
     }
