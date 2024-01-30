@@ -134,7 +134,7 @@ public class Game : Form
         // DrawChests();
         DrawPlayer();
         // DrawEnemies();
-        // DrawLantern(lanternX, lanternY, radius); 
+        DrawLantern(); 
         DrawStats();
         this.Pb.Refresh();
     }
@@ -156,7 +156,7 @@ public class Game : Form
     {
         const float wallSize = 350;
 
-        G.DrawRectangle(Pens.Red, new RectangleF(890 + 75 / 2, 470 + 75 / 2, 75, 75));
+        G.DrawRectangle(Pens.Red, new RectangleF(927 + 80 / 2, 462 + 75 / 2, 77, 95));
         if (visited is null)
             visited = new();
 
@@ -245,7 +245,7 @@ public class Game : Form
 
     private void DrawPlayer()
     {
-        G.DrawImage(Player.playerAnim[0], 890, 470, 150, 150);
+        G.DrawImage(Player.playerAnim[0], 930, 470, 150, 150);
     }
 
     private void DrawEnemies()
@@ -276,25 +276,42 @@ public class Game : Form
         }
     }
 
-    private void DrawLantern(float x, float y, float radius)
+    private void DrawLantern()
     {
-        float width = radius * 2;
-        float height = radius * 2;
+        const float min = .5f;
+        const float max = .9f;
 
-        RectangleF rect = new(x - radius, y - radius, width, height);
+        const int erro = 40; // ????
+        GraphicsPath path = new GraphicsPath();
 
-        for (float dist = 0; dist <= this.Height; dist += 1)
+        float radius = MathF.Sqrt(Pb.Width * Pb.Width + Pb.Height * Pb.Height) / 2;
+        
+        path.AddEllipse(
+            Pb.Width / 2 - radius - erro,
+            Pb.Height / 2 - radius, 
+            2 * radius + 2 * erro, 2 * radius + 2 * erro
+        );
+
+        ColorBlend blend = new ColorBlend();
+        blend.Colors = new Color[] {
+            Color.FromArgb(255, 0, 0, 0),
+            Color.FromArgb(255, 0, 0, 0),
+            Color.FromArgb(0, 0, 0, 0),
+            Color.FromArgb(0, 0, 0, 0),
+        };
+        blend.Positions = new float[] {
+            0f,
+            min,
+            max,
+            1f
+        };
+
+
+        var brush = new PathGradientBrush(path)
         {
-            var propDist = dist / this.Height;
-            float alpha = 2 * propDist * propDist;
+            InterpolationColors = blend
+        };
 
-            int aChannel = 255 -
-                (alpha < 0f ? 0 :
-                alpha > 1f ? 255 :
-                (int)(255 * alpha));
-            Color color = Color.FromArgb(aChannel, 0, 0, 0);
-            RectangleF borderRect = new(rect.X + dist, rect.Y + dist, rect.Width - 2 * dist, rect.Height - 2 * dist);
-            G.DrawEllipse(new Pen(color, 4), borderRect);
-        }
+        G.FillRectangle(brush, new Rectangle(0, 0, Pb.Width, Pb.Height));
     }
 }
