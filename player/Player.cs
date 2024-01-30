@@ -12,6 +12,22 @@ public class Player
     public float Speed { get; set; } = 5;
     public List<Image> img { get; set; } = new List<Image>();
 
+    public static Image[] playerAnim =
+    {
+        Bitmap.FromFile("./assets/player/1down.png"),
+        Bitmap.FromFile("./assets/player/2down.png"),
+        Bitmap.FromFile("./assets/player/3down.png"),
+        Bitmap.FromFile("./assets/player/4up.png"),
+        Bitmap.FromFile("./assets/player/5up.png"),
+        Bitmap.FromFile("./assets/player/6up.png"),
+        Bitmap.FromFile("./assets/player/7right.png"),
+        Bitmap.FromFile("./assets/player/8right.png"),
+        Bitmap.FromFile("./assets/player/9right.png"),
+        Bitmap.FromFile("./assets/player/10left.png"),
+        Bitmap.FromFile("./assets/player/11left.png"),
+        Bitmap.FromFile("./assets/player/12left.png"),
+    };
+
     public void Draw(
         int playerLife, 
         int seeds, 

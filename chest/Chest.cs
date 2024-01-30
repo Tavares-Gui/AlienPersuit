@@ -10,6 +10,12 @@ public class Chest
     public float Size { get; set; } = 10;
     public List<Image> img { get; set; }
 
+    public static Image[] chest =
+    {
+        Bitmap.FromFile("./assets/chests/flower1.png"),
+        Bitmap.FromFile("./assets/chests/flower2.png")
+    };
+
     public void Draw(bool open, string img1Path, string img2Path)
     {
         this.Open = open;

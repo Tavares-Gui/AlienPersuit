@@ -23,52 +23,6 @@ public class Game : Form
     private Maze maze;
     private Space crrSpace;
 
-    private Image floor1 = Image.FromFile("./assets/blocks/floor1.png");
-    private Image floor2 = Image.FromFile("./assets/blocks/floor2.png");
-    private Image floor3 = Image.FromFile("./assets/blocks/floor3.png");
-    private Image floor4 = Image.FromFile("./assets/blocks/floor4.png");
-    private Image floor5 = Image.FromFile("./assets/blocks/floor5.png");
-    private Image floor6 = Image.FromFile("./assets/blocks/floor6.png");
-    private Image floor7 = Image.FromFile("./assets/blocks/floor7.png");
-    private Image floor8 = Image.FromFile("./assets/blocks/floor8.png");
-    private Image floor9 = Image.FromFile("./assets/blocks/floor9.png");
-    private Image floor10 = Image.FromFile("./assets/blocks/floor10.png");
-    private Image floor11 = Image.FromFile("./assets/blocks/floor11.png");
-    private Image floor12 = Image.FromFile("./assets/blocks/floor12.png");
-    private Image floor13 = Image.FromFile("./assets/blocks/floor13.png");
-    private Image floor14 = Image.FromFile("./assets/blocks/floor14.png");
-    private Image floor15 = Image.FromFile("./assets/blocks/floor15.png");
-
-    private Image wall = Image.FromFile("./assets/blocks/wall.png");
-
-    private Image heart = Image.FromFile("./assets/objects/heart.png");
-    private Image seed = Image.FromFile("./assets/objects/seed.png");
-
-    private Image chestClosed = Image.FromFile("./assets/chests/flower1.png");
-    private Image chestOpened = Image.FromFile("./assets/chests/flower2.png");
-
-    public Image[] playerAnim =
-    {
-        Bitmap.FromFile("./assets/player/1down.png"),
-        Bitmap.FromFile("./assets/player/2down.png"),
-        Bitmap.FromFile("./assets/player/3down.png"),
-        Bitmap.FromFile("./assets/player/4up.png"),
-        Bitmap.FromFile("./assets/player/5up.png"),
-        Bitmap.FromFile("./assets/player/6up.png"),
-        Bitmap.FromFile("./assets/player/7right.png"),
-        Bitmap.FromFile("./assets/player/8right.png"),
-        Bitmap.FromFile("./assets/player/9right.png"),
-        Bitmap.FromFile("./assets/player/10left.png"),
-        Bitmap.FromFile("./assets/player/11left.png"),
-        Bitmap.FromFile("./assets/player/12left.png"),
-    };
-
-    public Image[] chestAnim =
-    {
-        Bitmap.FromFile("./assets/chests/flower1.png"),
-        Bitmap.FromFile("./assets/chests/flower2.png")
-    };
-
     private float baseX = 400;
     private float baseY = 400;
 
@@ -176,12 +130,12 @@ public class Game : Form
         G.Clear(Color.Black);
         Update();
         DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
+        DrawChests();
         DrawPlayer();
         DrawEnemies();
         // DrawLantern(lanternX, lanternY, radius); 
         DrawStats();
         this.Pb.Refresh();
-        // DrawEnemies();
     }
 
     public void Update()
@@ -200,9 +154,6 @@ public class Game : Form
     private void DrawWall(Space space, float x, float y, List<Space> visited = null)
     {
         const float wallSize = 350;
-        // Random randPosition = new Random();
-        // var randX = randPosition.Next((int)x);
-        // var randY = randPosition.Next((int)y);
 
         G.DrawRectangle(Pens.Red, new RectangleF(890 + 75 / 2, 470 + 75 / 2, 75, 75));
         if (visited is null)
@@ -214,29 +165,29 @@ public class Game : Form
 
         var imgFloor = (space.Left, space.Top, space.Right, space.Bottom) switch
         {
-            (null, null, null, _) => floor11,
-            (null, null, _, null) => floor10,
-            (null, _, null, null) => floor9,
-            (_, null, null, null) => floor8,
-            (null, null, _, _) => floor7,
-            (null, _, _, null) => floor6,
-            (_, _, null, null) => floor5,
-            (_, null, null, _) => floor4,
-            (_, null, _, null) => floor2,
-            (null, _, null, _) => floor1,
-            (_, null, _, _) => floor15,
-            (null, _, _, _) => floor14,
-            (_, _, _, null) => floor13,
-            (_, _, null, _) => floor12,
-            _ => floor3
+            (null, null, null, _) => Blocks.floors[10],
+            (null, null, _, null) => Blocks.floors[9],
+            (null, _, null, null) => Blocks.floors[8],
+            (_, null, null, null) => Blocks.floors[7],
+            (null, null, _, _) => Blocks.floors[6],
+            (null, _, _, null) => Blocks.floors[5],
+            (_, _, null, null) => Blocks.floors[4],
+            (_, null, null, _) => Blocks.floors[3],
+            (_, null, _, null) => Blocks.floors[1],
+            (null, _, null, _) => Blocks.floors[0],
+            (_, null, _, _) => Blocks.floors[14],
+            (null, _, _, _) => Blocks.floors[13],
+            (_, _, _, null) => Blocks.floors[12],
+            (_, _, null, _) => Blocks.floors[11],
+            _ => Blocks.floors[2]
         };
         G.DrawImage(imgFloor, x, y, wallSize, wallSize);
 
         if (space.Top == null)
         {
-            G.DrawImage(wall, x, y - 5, wallSize, 20);
+            G.DrawImage(Blocks.wall[0], x, y - 5, wallSize, 20);
             G.DrawRectangle(Pens.Red, new RectangleF(x, y - 5, wallSize, 20));
-    
+
         }
         else
         {
@@ -246,7 +197,7 @@ public class Game : Form
 
         if (space.Bottom == null)
         {
-            G.DrawImage(wall, x, y + wallSize - 5, wallSize, 20);
+            G.DrawImage(Blocks.wall[0], x, y + wallSize - 5, wallSize, 20);
             G.DrawRectangle(Pens.Red, new RectangleF(x, y + wallSize - 5, wallSize, 20));
         }
         else
@@ -257,7 +208,7 @@ public class Game : Form
 
         if (space.Left == null)
         {
-            G.DrawImage(wall, x - 5, y, 20, wallSize);
+            G.DrawImage(Blocks.wall[0], x - 5, y, 20, wallSize);
             G.DrawRectangle(Pens.Red, new RectangleF(x - 5, y, 20, wallSize));
         }
         else
@@ -268,7 +219,7 @@ public class Game : Form
 
         if (space.Right == null)
         {
-            G.DrawImage(wall, x + wallSize - 5, y, 20, wallSize);
+            G.DrawImage(Blocks.wall[0], x + wallSize - 5, y, 20, wallSize);
             G.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
         }
         else
@@ -276,12 +227,6 @@ public class Game : Form
             DrawWall(space.Right, x + wallSize, y, visited);
             G.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
         }
-
-        // if (chestCreated == false)
-        // {
-        //     G.DrawImage(chestClosed, randX, randY, 250, 250);
-        //     chestCreated = true;
-        // }
     }
 
     private void DrawStats()
@@ -291,31 +236,41 @@ public class Game : Form
 
         Font font = new("Arial", 12, FontStyle.Bold);
 
-        G.DrawImage(heart, Pb.Width * 0.01f, Pb.Height * 0.01f);
-        G.DrawImage(seed, Pb.Width * 0.06f, Pb.Height * 0.01f);
+        G.DrawImage(Blocks.stats[0], Pb.Width * 0.01f, Pb.Height * 0.01f);
+        G.DrawImage(Blocks.stats[1], Pb.Width * 0.06f, Pb.Height * 0.01f);
         G.DrawString(Player.PlayerLife.ToString(), font, textBrush, new PointF(Pb.Width * 0.05f, Pb.Height * 0.05f));
         G.DrawString(Player.Seeds.ToString(), font, textBrush, new PointF(Pb.Width * 0.10f, Pb.Height * 0.05f));
     }
 
     private void DrawPlayer()
     {
-        G.DrawImage(playerAnim[0], 890, 470, 150, 150);
+        G.DrawImage(Player.playerAnim[0], 890, 470, 150, 150);
     }
 
     private void DrawEnemies()
     {
-        if (enemiesCreated == false)
-        {
-            for (int i = 0; i < Enemy.enemies.Length; i++)
-            {
-                var randX = randPosition.Next();
-                var randY = randPosition.Next();
+        // foreach (Image enemy in Enemy.enemies)
+        // {
+        //     int randX = randPosition.Next(0, Pb.Width - 200);
+        //     int randY = randPosition.Next(0, Pb.Height - 200);
 
-                G.DrawImage(Enemy.enemies[i], randX, randY, 200, 200);
-            }
+        //     G.DrawImage(enemy, randX, randY, 200, 200);
+        // }
 
-            enemiesCreated = true;
-        }
+        G.DrawImage(Enemy.enemies[8], 500, 500, 400, 200);
+    }
+
+    private void DrawChests()
+    {
+        // foreach (Image chest in Chest.chest)
+        // {
+        //     int randX = randPosition.Next(0, Pb.Width - 200);
+        //     int randY = randPosition.Next(0, Pb.Height - 200);
+
+        //     G.DrawImage(chest, randX, randY, 200, 200);
+        // }
+
+        G.DrawImage(Chest.chest[0], 800, 800, 200, 200);
     }
 
     private void DrawLantern(float x, float y, float radius)
