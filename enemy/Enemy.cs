@@ -8,6 +8,7 @@ public class Enemy
     public int EnemyLife { get; set; } = 0;
     public int EnemyDamage { get; set; } = 0; 
     public float EnemySpeed { get; set; } = 0;
+    public static Random random { get; set; } = new Random();
     public float X { get; set; }
     public float Y { get; set; }
     public float Size { get; set; } = 200;
@@ -19,6 +20,9 @@ public class Enemy
         EnemyLife = enemyLife;
         EnemySpeed = enemySpeed;
         EnemyDamage = enemyDamage;
+
+        this.X = random.Next(0, Game.Pb.Width - (int)this.Size);
+        this.Y = random.Next(0, Game.Pb.Height - (int)this.Size);
     }
 
     public static List<Enemy> Enemies { get; set; } = new List<Enemy>

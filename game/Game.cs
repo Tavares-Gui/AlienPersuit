@@ -4,13 +4,14 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
+using System.Configuration;
 
 public class Game : Form
 {
     public Graphics G { get; set; }
     public Bitmap Bmp { get; set; }
     public Timer Tmr { get; set; }
-    public PictureBox Pb { get; set; }
+    public static PictureBox Pb { get; set; }
     public Player Player { get; set; }
     public Enemy Enemy { get; set; }
     public Chest Chest { get; set; }
@@ -33,6 +34,8 @@ public class Game : Form
     float playerX = 960;
     float playerY = 540;
 
+    int spawnsCounter = 0;
+
     public Game()
     {
         // Collisions.New();
@@ -48,7 +51,7 @@ public class Game : Form
         this.Tmr = timer;
         this.Player = new();
 
-        this.Pb = new()
+        Pb = new()
         {
             Dock = DockStyle.Fill,
         };
@@ -131,12 +134,11 @@ public class Game : Form
         G.Clear(Color.Black);
         Update();
         DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
-        // DrawChests();
         DrawPlayer();
-        // DrawEnemies();
-        DrawLantern(); 
+        DrawEnemies();
+        DrawLantern();
         DrawStats();
-        this.Pb.Refresh();
+        Pb.Refresh();
     }
 
     public void Update()
@@ -183,6 +185,8 @@ public class Game : Form
             _ => Images.floors[2]
         };
         G.DrawImage(imgFloor, x, y, wallSize, wallSize);
+
+        DrawChests(space, x, y);
 
         if (space.Top == null)
         {
@@ -252,26 +256,29 @@ public class Game : Form
     {
         foreach (Enemy enemy in Enemy.Enemies)
         {
-            int randX = randPosition.Next(0, Pb.Width - (int)enemy.Size);
-            int randY = randPosition.Next(0, Pb.Height - (int)enemy.Size);
-
-            if (enemy.img.Count > 0)
-            {
-                G.DrawImage(enemy.img[0], new RectangleF(randX, randY, (int)enemy.Size, (int)enemy.Size));
-            }
+            G.DrawImage(enemy.img[0], enemy.X + maze.Location.X, enemy.Y + maze.Location.Y, enemy.Size, enemy.Size);
         }
     }
 
-    private void DrawChests()
+    private void DrawChests(Space space, float x, float y)
     {
+        return;
         foreach (Chest chest in Chest.Chests)
         {
-            int randX = randPosition.Next(0, Pb.Width - (int)chest.Size);
-            int randY = randPosition.Next(0, Pb.Height - (int)chest.Size);
-
             if (chest.img.Count > 0)
             {
-                G.DrawImage(chest.img[0], new RectangleF(randX, randY, (int)chest.Size, (int)chest.Size));
+                x++;
+                y++;
+
+                if (
+                    space.Left == null && space.Top == null && space.Right == null ||
+                    space.Left == null && space.Top == null && space.Bottom == null ||
+                    space.Left == null && space.Right == null && space.Bottom == null ||
+                    space.Top == null && space.Right == null && space.Bottom == null
+                )
+                {
+                    G.DrawImage(chest.img[0], new RectangleF(x, y, (int)chest.Size, (int)chest.Size));
+                }
             }
         }
     }
@@ -285,10 +292,10 @@ public class Game : Form
         GraphicsPath path = new GraphicsPath();
 
         float radius = MathF.Sqrt(Pb.Width * Pb.Width + Pb.Height * Pb.Height) / 2;
-        
+
         path.AddEllipse(
             Pb.Width / 2 - radius - erro,
-            Pb.Height / 2 - radius, 
+            Pb.Height / 2 - radius,
             2 * radius + 2 * erro, 2 * radius + 2 * erro
         );
 
