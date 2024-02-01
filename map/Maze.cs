@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class Maze
 {
+    const float wallSize = 350;
     public Space Root { get; set; }
     public List<Space> Spaces { get; } = new();
     public PointF Location { get; set; } = new(0, 0);
@@ -125,7 +126,7 @@ public class Maze
         }
     }
 
-    public void Move()
+    public void Move(RectangleF player, Space crrSpace)
     {
         // oldVars
         var oldLocation = this.Location;
@@ -159,21 +160,9 @@ public class Maze
             vy = max;
         else if (vy < -max)
             vy = -max;
-
-        // if (!Collisions.Current.CheckCollisions(Maze))
-        // {
-        //     // MessageBox.Show("ff");
-        //     return;
-        // }
-
-        // MessageBox.Show($"x: {Location.X} y: {Location.Y}");
-
-        //acao pos colisao
-        // const float energyLoss = 0.2f;
-        // vx = -vx * energyLoss;
-        // vy = -vy * energyLoss;
-
-        // this.Location = oldLocation;
+        
+        if (HasWall(player, Location.X, Location.Y, crrSpace))
+            Location = oldLocation;
     }
 
     public void MoveUp() => Ay = 1;
@@ -185,6 +174,118 @@ public class Maze
     public void StopDown() => Ay = 0;
     public void StopRight() => Ax = 0;
     public void StopLeft() => Ax = 0;
+
+    public bool HasWall(RectangleF player, float x, float y, Space crrSpace)
+        => hasWall(player, x, y, crrSpace);
+    
+    private bool hasWall(RectangleF player, float x, float y, Space space, List<Space> visited = null)
+    {
+        visited ??= new();
+
+        if (visited.Contains(space))
+            return false;
+        visited.Add(space);
+
+        if (space.Top is not null && hasWall(player, x, y - wallSize, space.Top, visited))
+            return true;
+        else if (space.Top is null && player.IntersectsWith(new RectangleF(x, y - 5, wallSize, 20)))
+            return true;
+
+        if (space.Bottom is not null && hasWall(player, x, y + wallSize, space.Bottom, visited))
+            return true;
+        else if (space.Bottom is null && player.IntersectsWith(new RectangleF(x, y + wallSize - 5, wallSize, 20)))
+            return true;
+
+        if (space.Left is not null && hasWall(player, x - wallSize, y, space.Left, visited))
+            return true;
+        else if (space.Left is null && player.IntersectsWith(new RectangleF(x - 5, y, 20, wallSize)))
+            return true;
+        
+        if (space.Right is not null && hasWall(player, x + wallSize, y, space.Right, visited))
+            return true;
+        else if (space.Right is null && player.IntersectsWith(new RectangleF(x + wallSize - 5, y, 20, wallSize)))
+            return true;
+        
+        return false;
+    }
+
+    public void Draw(Graphics g, Space space)
+    {
+        if (space == null)
+            return;
+        DrawWall(g, space, Location.X, Location.Y);
+    }
+
+    private void DrawWall(Graphics g, Space space, float x, float y, List<Space> visited = null)
+    {
+        if (visited is null)
+            visited = new();
+
+        if (visited.Contains(space))
+            return;
+        visited.Add(space);
+
+        var imgFloor = (space.Left, space.Top, space.Right, space.Bottom) switch
+        {
+            (null, null, null, _) => Images.floors[10],
+            (null, null, _, null) => Images.floors[9],
+            (null, _, null, null) => Images.floors[8],
+            (_, null, null, null) => Images.floors[7],
+            (null, null, _, _) => Images.floors[6],
+            (null, _, _, null) => Images.floors[5],
+            (_, _, null, null) => Images.floors[4],
+            (_, null, null, _) => Images.floors[3],
+            (_, null, _, null) => Images.floors[1],
+            (null, _, null, _) => Images.floors[0],
+            (_, null, _, _) => Images.floors[14],
+            (null, _, _, _) => Images.floors[13],
+            (_, _, _, null) => Images.floors[12],
+            (_, _, null, _) => Images.floors[11],
+            _ => Images.floors[2]
+        };
+        g.DrawImage(imgFloor, x, y, wallSize, wallSize);
+
+        if (space.Top == null)
+        {
+            g.DrawImage(Images.wall[0], x, y - 5, wallSize, 20);
+            g.DrawRectangle(Pens.Red, new RectangleF(x, y - 5, wallSize, 20));
+
+        }
+        else
+        {
+            DrawWall(g, space.Top, x, y - wallSize, visited);
+        }
+
+        if (space.Bottom == null)
+        {
+            g.DrawImage(Images.wall[0], x, y + wallSize - 5, wallSize, 20);
+            g.DrawRectangle(Pens.Red, new RectangleF(x, y + wallSize - 5, wallSize, 20));
+        }
+        else
+        {
+            DrawWall(g, space.Bottom, x, y + wallSize, visited);
+        }
+
+        if (space.Left == null)
+        {
+            g.DrawImage(Images.wall[0], x - 5, y, 20, wallSize);
+            g.DrawRectangle(Pens.Red, new RectangleF(x - 5, y, 20, wallSize));
+        }
+        else
+        {
+            DrawWall(g, space.Left, x - wallSize, y, visited);
+        }
+
+        if (space.Right == null)
+        {
+            g.DrawImage(Images.wall[0], x + wallSize - 5, y, 20, wallSize);
+            g.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
+        }
+        else
+        {
+            DrawWall(g, space.Right, x + wallSize, y, visited);
+        }
+    }
 }
 
 
@@ -204,10 +305,5 @@ public class Space
     {
         IsSolution = false;
         Visited = false;
-    }
-
-    public static implicit operator float(Space v)
-    {
-        throw new NotImplementedException();
     }
 }

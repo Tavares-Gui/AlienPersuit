@@ -11,10 +11,9 @@ public class Enemy
     public static Random random { get; set; } = new Random();
     public float X { get; set; }
     public float Y { get; set; }
-    public float Location { get; set; }
     public float Size { get; set; } = 200;
     public List<Image> img { get; set; } = new List<Image>();
-    private Space crrSpace;
+    public Space space { get; set; }
 
     public Enemy(Image img ,int enemyLife, int enemySpeed, int enemyDamage)
     {
@@ -23,10 +22,9 @@ public class Enemy
         EnemySpeed = enemySpeed;
         EnemyDamage = enemyDamage;
 
-        this.X = this.Location;
-        this.Y = this.Location;
+        this.X = random.Next(0, Game.Pb.Width - (int)this.Size);
+        this.Y = random.Next(0, Game.Pb.Height - (int)this.Size);
     }
-
 
     public static List<Enemy> Enemies { get; set; } = new List<Enemy>
     {
@@ -41,17 +39,4 @@ public class Enemy
         new Enemy(Bitmap.FromFile("./assets/enemy/strong/marcao.png"), 7, 6, 10),
         new Enemy(Bitmap.FromFile("./assets/enemy/strong/hamiltonDOr.png"), 10, 10, 10)
     };
-
-    public void SetPosition(Space space)
-    {
-        if (
-            space.Left == null && space.Top == null && space.Right == null ||
-            space.Left == null && space.Top == null && space.Bottom == null ||
-            space.Left == null && space.Right == null && space.Bottom == null ||
-            space.Top == null && space.Right == null && space.Bottom == null
-        )
-        {
-            Location = crrSpace;
-        }
-    }
 }

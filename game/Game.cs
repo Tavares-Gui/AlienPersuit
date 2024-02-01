@@ -176,7 +176,7 @@ public class Game : Form
     {
         G.Clear(Color.Black);
         Update();
-        DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
+        maze.Draw(G, crrSpace);
         DrawPlayer();
         // DrawEnemies();
         DrawLantern();
@@ -191,97 +191,13 @@ public class Game : Form
         Pb.Refresh();
     }
 
-    public void Update()
+    public new void Update()
     {
-        maze.Move();
-    }
-
-
-    private void DrawMaze(float x, float y, Space space)
-    {
-        if (space == null)
-            return;
-        DrawWall(space, x, y);
-    }
-
-    private void DrawWall(Space space, float x, float y, List<Space> visited = null)
-    {
-        const float wallSize = 350;
-
-        G.DrawRectangle(Pens.Red, new RectangleF(927 + 80 / 2, 462 + 75 / 2, 77, 95));
-        if (visited is null)
-            visited = new();
-
-        if (visited.Contains(space))
-            return;
-        visited.Add(space);
-
-        var imgFloor = (space.Left, space.Top, space.Right, space.Bottom) switch
-        {
-            (null, null, null, _) => Images.floors[10],
-            (null, null, _, null) => Images.floors[9],
-            (null, _, null, null) => Images.floors[8],
-            (_, null, null, null) => Images.floors[7],
-            (null, null, _, _) => Images.floors[6],
-            (null, _, _, null) => Images.floors[5],
-            (_, _, null, null) => Images.floors[4],
-            (_, null, null, _) => Images.floors[3],
-            (_, null, _, null) => Images.floors[1],
-            (null, _, null, _) => Images.floors[0],
-            (_, null, _, _) => Images.floors[14],
-            (null, _, _, _) => Images.floors[13],
-            (_, _, _, null) => Images.floors[12],
-            (_, _, null, _) => Images.floors[11],
-            _ => Images.floors[2]
-        };
-        G.DrawImage(imgFloor, x, y, wallSize, wallSize);
-
-        DrawChests(space, x, y);
-
-        if (space.Top == null)
-        {
-            G.DrawImage(Images.wall[0], x, y - 5, wallSize, 20);
-            G.DrawRectangle(Pens.Red, new RectangleF(x, y - 5, wallSize, 20));
-
-        }
-        else
-        {
-            DrawWall(space.Top, x, y - wallSize, visited);
-            G.DrawRectangle(Pens.Red, new RectangleF(x, y - 5, wallSize, 20));
-        }
-
-        if (space.Bottom == null)
-        {
-            G.DrawImage(Images.wall[0], x, y + wallSize - 5, wallSize, 20);
-            G.DrawRectangle(Pens.Red, new RectangleF(x, y + wallSize - 5, wallSize, 20));
-        }
-        else
-        {
-            DrawWall(space.Bottom, x, y + wallSize, visited);
-            G.DrawRectangle(Pens.Red, new RectangleF(x, y + wallSize - 5, wallSize, 20));
-        }
-
-        if (space.Left == null)
-        {
-            G.DrawImage(Images.wall[0], x - 5, y, 20, wallSize);
-            G.DrawRectangle(Pens.Red, new RectangleF(x - 5, y, 20, wallSize));
-        }
-        else
-        {
-            DrawWall(space.Left, x - wallSize, y, visited);
-            G.DrawRectangle(Pens.Red, new RectangleF(x - 5, y, 20, wallSize));
-        }
-
-        if (space.Right == null)
-        {
-            G.DrawImage(Images.wall[0], x + wallSize - 5, y, 20, wallSize);
-            G.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
-        }
-        else
-        {
-            DrawWall(space.Right, x + wallSize, y, visited);
-            G.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
-        }
+        maze.Move(new RectangleF( 
+            Pb.Width / 2 - 75, 
+            Pb.Height / 2 -75 ,
+            150, 150), crrSpace
+        );
     }
 
     private void DrawStats()
@@ -299,7 +215,11 @@ public class Game : Form
 
     private void DrawPlayer()
     {
-        G.DrawImage(Player.playerAnim[0], 930, 470, 150, 150);
+        G.DrawImage(Player.playerAnim[0], 
+            Pb.Width / 2 - 75, 
+            Pb.Height / 2 -75 ,
+            150, 150
+        );
     }
 
     // private void DrawEnemies()
@@ -338,7 +258,7 @@ public class Game : Form
         const float min = .5f;
         const float max = .9f;
 
-        const int erro = 40; // ????
+        const int erro = 0; // ????
         GraphicsPath path = new GraphicsPath();
 
         float radius = MathF.Sqrt(Pb.Width * Pb.Width + Pb.Height * Pb.Height) / 2;
