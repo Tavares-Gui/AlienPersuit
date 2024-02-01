@@ -10,12 +10,8 @@ public class Game : Form
     public Bitmap Bmp { get; set; }
     public Timer Tmr { get; set; }
     public static PictureBox Pb { get; set; }
-    public Enemy Enemy { get; set; }
-    public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
     public Pen pen { get; set; }
-    public bool chestCreated { get; set; } = false;
-    public bool enemiesCreated { get; set; } = false;
 
     private Lantern lantern = new();
     private Player player = new();
@@ -28,8 +24,7 @@ public class Game : Form
         this.Controls.Clear();
         if (this.Tmr is not null)
             this.Tmr.Stop();
-        
-        // Collisions.New();
+
         maze = Maze.Prim(50, 50);
         crrSpace = maze.Spaces
             .OrderByDescending(s => GlobalSeed.Current.Random.Next())
@@ -59,10 +54,8 @@ public class Game : Form
 
             G = Graphics.FromImage(this.Bmp);
             Pb.Image = this.Bmp;
-            // G.CompositingQuality = CompositingQuality.AssumeLinear;
             G.InterpolationMode = InterpolationMode.NearestNeighbor;
             G.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            // G.SmoothingMode = SmoothingMode.HighSpeed;
             Point chestPosition = new(
                 GlobalSeed.Current.Random.Next(Pb.Width), 
                 GlobalSeed.Current.Random.Next(Pb.Height)
@@ -81,10 +74,8 @@ public class Game : Form
 
                 G = Graphics.FromImage(this.Bmp);
                 Pb.Image = this.Bmp;
-                // G.CompositingQuality = CompositingQuality.AssumeLinear;
                 G.InterpolationMode = InterpolationMode.NearestNeighbor;
                 G.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                // G.SmoothingMode = SmoothingMode.HighSpeed;
                 Point chestPosition = new(
                     GlobalSeed.Current.Random.Next(Pb.Width), 
                     GlobalSeed.Current.Random.Next(Pb.Height)
@@ -165,7 +156,6 @@ public class Game : Form
         Update();
         maze.Draw(G, crrSpace);
         player.Draw(G, Pb);
-        // DrawEnemies();
         lantern.Draw(G, Pb);
         player.DrawStats(G, Pb);
         G.DrawString(
