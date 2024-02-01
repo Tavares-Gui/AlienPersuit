@@ -246,41 +246,28 @@ public class Maze
         g.DrawImage(imgFloor, x, y, wallSize, wallSize);
 
         if (space.Top == null)
-        {
             g.DrawImage(Images.wall[0], x, y - 5, wallSize, 20);
-            g.DrawRectangle(Pens.Red, new RectangleF(x, y - 5, wallSize, 20));
-
-        }
         else
         {
             DrawWall(g, space.Top, x, y - wallSize, visited);
         }
 
         if (space.Bottom == null)
-        {
             g.DrawImage(Images.wall[0], x, y + wallSize - 5, wallSize, 20);
-            g.DrawRectangle(Pens.Red, new RectangleF(x, y + wallSize - 5, wallSize, 20));
-        }
         else
         {
             DrawWall(g, space.Bottom, x, y + wallSize, visited);
         }
 
         if (space.Left == null)
-        {
             g.DrawImage(Images.wall[0], x - 5, y, 20, wallSize);
-            g.DrawRectangle(Pens.Red, new RectangleF(x - 5, y, 20, wallSize));
-        }
         else
         {
             DrawWall(g, space.Left, x - wallSize, y, visited);
         }
 
         if (space.Right == null)
-        {
             g.DrawImage(Images.wall[0], x + wallSize - 5, y, 20, wallSize);
-            g.DrawRectangle(Pens.Red, new RectangleF(x + wallSize - 5, y, 20, wallSize));
-        }
         else
         {
             DrawWall(g, space.Right, x + wallSize, y, visited);

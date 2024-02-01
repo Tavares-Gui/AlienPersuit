@@ -1,6 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
+using System.Collections.Generic;
 
 public class Player
 {
@@ -10,6 +10,7 @@ public class Player
     public int Tools { get; set; } = 0;
     public float Vx { get; set; }
     public float Vy { get; set; }
+    public float Size { get; set; } = 150;
     public List<Image> img { get; set; } = new List<Image>();
 
     public static Image[] playerAnim =
@@ -28,22 +29,25 @@ public class Player
         Bitmap.FromFile("./assets/player/12left.png"),
     };
 
-    public void Draw(
-        int playerLife, 
-        int seeds, 
-        string img1Path, string img2Path, string img3Path, 
-        string img4Path, string img5Path, string img6Path, 
-        string img7Path, string img8Path, string img9Path, 
-        string img10Path, string img11Path, string img12Path
-    )
+    public void Draw(Graphics g, PictureBox pb)
     {
-        this.PlayerLife = playerLife;
-        this.Seeds = seeds;
-        this.img = new(){
-            Bitmap.FromFile(img1Path), Bitmap.FromFile(img2Path), Bitmap.FromFile(img3Path),
-            Bitmap.FromFile(img4Path), Bitmap.FromFile(img5Path), Bitmap.FromFile(img6Path),
-            Bitmap.FromFile(img7Path), Bitmap.FromFile(img8Path), Bitmap.FromFile(img9Path),
-            Bitmap.FromFile(img10Path), Bitmap.FromFile(img11Path), Bitmap.FromFile(img12Path)
-        };
+        g.DrawImage(playerAnim[0], 
+            pb.Width / 2 - 75, 
+            pb.Height / 2 -75 ,
+            Size, Size
+        );
+    }
+
+    public void DrawStats(Graphics g, PictureBox pb)
+    {
+        Color textColor = Color.White;
+        SolidBrush textBrush = new(textColor);
+
+        Font font = new("Arial", 12, FontStyle.Bold);
+
+        g.DrawImage(Images.stats[0], pb.Width * 0.01f, pb.Height * 0.01f);
+        g.DrawImage(Images.stats[1], pb.Width * 0.06f, pb.Height * 0.01f);
+        g.DrawString(PlayerLife.ToString(), font, textBrush, new PointF(pb.Width * 0.05f, pb.Height * 0.05f));
+        g.DrawString(Seeds.ToString(), font, textBrush, new PointF(pb.Width * 0.10f, pb.Height * 0.05f));
     }
 }

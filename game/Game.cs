@@ -3,8 +3,6 @@ using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
-using System.Collections.Generic;
-using System.Configuration;
 
 public class Game : Form
 {
@@ -12,7 +10,6 @@ public class Game : Form
     public Bitmap Bmp { get; set; }
     public Timer Tmr { get; set; }
     public static PictureBox Pb { get; set; }
-    public Player Player { get; set; }
     public Enemy Enemy { get; set; }
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
@@ -20,20 +17,10 @@ public class Game : Form
     public bool chestCreated { get; set; } = false;
     public bool enemiesCreated { get; set; } = false;
 
-    private Maze maze;
+    private Lantern lantern = new();
+    private Player player = new();
+    private Maze maze = new();
     private Space crrSpace;
-
-    private float baseX = 400;
-    private float baseY = 400;
-
-    float lanternX = 960;
-    float lanternY = 540;
-    float radius = 1100;
-
-    float playerX = 960;
-    float playerY = 540;
-
-    int spawnsCounter = 0;
     bool loaded = false;
 
     public void Reset()
@@ -53,7 +40,7 @@ public class Game : Form
             Interval = 20,
         };
         this.Tmr = timer;
-        this.Player = new();
+        this.player = new();
 
         Pb = new()
         {
@@ -177,11 +164,10 @@ public class Game : Form
         G.Clear(Color.Black);
         Update();
         maze.Draw(G, crrSpace);
-        DrawPlayer();
+        player.Draw(G, Pb);
         // DrawEnemies();
-        DrawLantern();
-        DrawStats();
-
+        lantern.Draw(G, Pb);
+        player.DrawStats(G, Pb);
         G.DrawString(
             $"seed: {GlobalSeed.Current.Seed}. press C to copy seed.",
             SystemFonts.MenuFont,
@@ -198,97 +184,5 @@ public class Game : Form
             Pb.Height / 2 -75 ,
             150, 150), crrSpace
         );
-    }
-
-    private void DrawStats()
-    {
-        Color textColor = Color.White;
-        SolidBrush textBrush = new(textColor);
-
-        Font font = new("Arial", 12, FontStyle.Bold);
-
-        G.DrawImage(Images.stats[0], Pb.Width * 0.01f, Pb.Height * 0.01f);
-        G.DrawImage(Images.stats[1], Pb.Width * 0.06f, Pb.Height * 0.01f);
-        G.DrawString(Player.PlayerLife.ToString(), font, textBrush, new PointF(Pb.Width * 0.05f, Pb.Height * 0.05f));
-        G.DrawString(Player.Seeds.ToString(), font, textBrush, new PointF(Pb.Width * 0.10f, Pb.Height * 0.05f));
-    }
-
-    private void DrawPlayer()
-    {
-        G.DrawImage(Player.playerAnim[0], 
-            Pb.Width / 2 - 75, 
-            Pb.Height / 2 -75 ,
-            150, 150
-        );
-    }
-
-    // private void DrawEnemies()
-    // {
-    //     foreach (Enemy enemy in Enemy.Enemies)
-    //     {
-    //         G.DrawImage(enemy.img[0], Enemy.SetPosition(space), Enemy.SetPosition(space), enemy.Size, enemy.Size);
-    //     }
-    // }
-
-    private void DrawChests(Space space, float x, float y)
-    {
-        return;
-        foreach (Chest chest in Chest.Chests)
-        {
-            if (chest.img.Count > 0)
-            {
-                x++;
-                y++;
-
-                if (
-                    space.Left == null && space.Top == null && space.Right == null ||
-                    space.Left == null && space.Top == null && space.Bottom == null ||
-                    space.Left == null && space.Right == null && space.Bottom == null ||
-                    space.Top == null && space.Right == null && space.Bottom == null
-                )
-                {
-                    G.DrawImage(chest.img[0], new RectangleF(x, y, (int)chest.Size, (int)chest.Size));
-                }
-            }
-        }
-    }
-
-    private void DrawLantern()
-    {
-        const float min = .5f;
-        const float max = .9f;
-
-        const int erro = 0; // ????
-        GraphicsPath path = new GraphicsPath();
-
-        float radius = MathF.Sqrt(Pb.Width * Pb.Width + Pb.Height * Pb.Height) / 2;
-
-        path.AddEllipse(
-            Pb.Width / 2 - radius - erro,
-            Pb.Height / 2 - radius,
-            2 * radius + 2 * erro, 2 * radius + 2 * erro
-        );
-
-        ColorBlend blend = new ColorBlend();
-        blend.Colors = new Color[] {
-            Color.FromArgb(255, 0, 0, 0),
-            Color.FromArgb(255, 0, 0, 0),
-            Color.FromArgb(0, 0, 0, 0),
-            Color.FromArgb(0, 0, 0, 0),
-        };
-        blend.Positions = new float[] {
-            0f,
-            min,
-            max,
-            1f
-        };
-
-
-        var brush = new PathGradientBrush(path)
-        {
-            InterpolationColors = blend
-        };
-
-        G.FillRectangle(brush, new Rectangle(0, 0, Pb.Width, Pb.Height));
     }
 }
