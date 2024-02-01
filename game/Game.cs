@@ -10,8 +10,6 @@ public class Game : Form
     public Bitmap Bmp { get; set; }
     public Timer Tmr { get; set; }
     public static PictureBox Pb { get; set; }
-    public int Index { get; set; } = 0;
-    public Pen pen { get; set; }
 
     private Lantern lantern = new();
     private Player player = new();
