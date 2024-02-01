@@ -16,7 +16,6 @@ public class Game : Form
     public Enemy Enemy { get; set; }
     public Chest Chest { get; set; }
     public int Index { get; set; } = 0;
-    Random randPosition = new Random();
     public Pen pen { get; set; }
     public bool chestCreated { get; set; } = false;
     public bool enemiesCreated { get; set; } = false;
@@ -35,13 +34,18 @@ public class Game : Form
     float playerY = 540;
 
     int spawnsCounter = 0;
+    bool loaded = false;
 
-    public Game()
+    public void Reset()
     {
+        this.Controls.Clear();
+        if (this.Tmr is not null)
+            this.Tmr.Stop();
+        
         // Collisions.New();
         maze = Maze.Prim(50, 50);
         crrSpace = maze.Spaces
-            .OrderByDescending(s => Random.Shared.Next())
+            .OrderByDescending(s => GlobalSeed.Current.Random.Next())
             .FirstOrDefault();
 
         var timer = new Timer
@@ -59,7 +63,7 @@ public class Game : Form
         WindowState = FormWindowState.Maximized;
         FormBorderStyle = FormBorderStyle.None;
 
-        this.Load += (o, e) =>
+        if (loaded)
         {
             this.Bmp = new Bitmap(
                 Pb.Width,
@@ -72,10 +76,35 @@ public class Game : Form
             G.InterpolationMode = InterpolationMode.NearestNeighbor;
             G.PixelOffsetMode = PixelOffsetMode.HighQuality;
             // G.SmoothingMode = SmoothingMode.HighSpeed;
-            Random randNum = new Random();
-            Point chestPosition = new(randNum.Next(Pb.Width), randNum.Next(Pb.Height));
+            Point chestPosition = new(
+                GlobalSeed.Current.Random.Next(Pb.Width), 
+                GlobalSeed.Current.Random.Next(Pb.Height)
+            );
             timer.Start();
-        };
+        }
+        else 
+        {
+            this.Load += (o, e) =>
+            {
+                loaded = true;
+                this.Bmp = new Bitmap(
+                    Pb.Width,
+                    Pb.Height
+                );
+
+                G = Graphics.FromImage(this.Bmp);
+                Pb.Image = this.Bmp;
+                // G.CompositingQuality = CompositingQuality.AssumeLinear;
+                G.InterpolationMode = InterpolationMode.NearestNeighbor;
+                G.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                // G.SmoothingMode = SmoothingMode.HighSpeed;
+                Point chestPosition = new(
+                    GlobalSeed.Current.Random.Next(Pb.Width), 
+                    GlobalSeed.Current.Random.Next(Pb.Height)
+                );
+                timer.Start();
+            };
+        }
 
         Controls.Add(Pb);
         timer.Tick += (o, e) => this.Tick();
@@ -103,6 +132,15 @@ public class Game : Form
                 case Keys.Right:
                     maze.MoveRight();
                     break;
+                
+                case Keys.C:
+                    Clipboard.SetText(GlobalSeed.Current.Seed.ToString());
+                    break;
+                
+                case Keys.V:
+                    GlobalSeed.Reset(int.Parse(Clipboard.GetText()));
+                    Reset();
+                    break;
             }
         };
 
@@ -129,15 +167,27 @@ public class Game : Form
         };
     }
 
+    public Game()
+    {
+        Reset();
+    }
+
     public void Tick()
     {
         G.Clear(Color.Black);
         Update();
         DrawMaze(400 + maze.Location.X, 400 + maze.Location.Y, crrSpace);
         DrawPlayer();
-        DrawEnemies();
+        // DrawEnemies();
         DrawLantern();
         DrawStats();
+
+        G.DrawString(
+            $"seed: {GlobalSeed.Current.Seed}. press C to copy seed.",
+            SystemFonts.MenuFont,
+            Brushes.White,
+            new PointF(20, Pb.Height - 20)
+        );
         Pb.Refresh();
     }
 
@@ -252,13 +302,13 @@ public class Game : Form
         G.DrawImage(Player.playerAnim[0], 930, 470, 150, 150);
     }
 
-    private void DrawEnemies()
-    {
-        foreach (Enemy enemy in Enemy.Enemies)
-        {
-            G.DrawImage(enemy.img[0], enemy.X + maze.Location.X, enemy.Y + maze.Location.Y, enemy.Size, enemy.Size);
-        }
-    }
+    // private void DrawEnemies()
+    // {
+    //     foreach (Enemy enemy in Enemy.Enemies)
+    //     {
+    //         G.DrawImage(enemy.img[0], Enemy.SetPosition(space), Enemy.SetPosition(space), enemy.Size, enemy.Size);
+    //     }
+    // }
 
     private void DrawChests(Space space, float x, float y)
     {

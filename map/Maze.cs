@@ -36,8 +36,8 @@ public class Maze
         {
             for (int j = 0; j < sy; j++)
             {
-                topgrid[i, j] = (byte)Random.Shared.Next(255);
-                rightgrid[i, j] = (byte)Random.Shared.Next(255);
+                topgrid[i, j] = (byte)GlobalSeed.Current.Random.Next(255);
+                rightgrid[i, j] = (byte)GlobalSeed.Current.Random.Next(255);
             }
         }
 
@@ -204,5 +204,10 @@ public class Space
     {
         IsSolution = false;
         Visited = false;
+    }
+
+    public static implicit operator float(Space v)
+    {
+        throw new NotImplementedException();
     }
 }

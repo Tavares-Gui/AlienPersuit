@@ -1,7 +1,12 @@
+using System.Threading;
 using System.Windows.Forms;
+
+Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
+Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
 
 ApplicationConfiguration.Initialize();
 
-Game game = new();
+if (args.Length > 0)
+    GlobalSeed.Reset(int.Parse(args[0]));
 
-Application.Run(game);
+Application.Run(new Game());
