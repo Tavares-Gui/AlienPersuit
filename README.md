@@ -14,13 +14,14 @@
 ### MAZE
 - [X] Draw maze correctly
 - [X] Put the maze in the correct size
-- [ ] Colision
+- [X] Colision
+- [X] Map seed
 
 
 ### PLAYER
 
 - [X] Walk
-- [ ] Colision
+- [X] Colision
 - [ ] Shoot
 - [ ] Animation
 - [ ] Give and recieve damage
