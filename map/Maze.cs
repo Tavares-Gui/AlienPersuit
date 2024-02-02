@@ -14,7 +14,7 @@ public class Maze
     private DateTime dt = DateTime.Now;
     private float vx { get; set; }
     private float vy { get; set; }
-    private float BaseAcceleration { get; set; } = 1_500;
+    private float BaseAcceleration { get; set; } = 2_500;
 
     public void Reset()
     {
@@ -168,6 +168,10 @@ public class Maze
     public void MoveRight() => Ax = -1;
     public void MoveLeft() => Ax = 1;
 
+
+    public void StopY_axis() => Ay = 0;
+    public void StopX_axis() => Ax = 0;
+    
     public void StopUp() => Ay = 0;
     public void StopDown() => Ay = 0;
     public void StopRight() => Ax = 0;

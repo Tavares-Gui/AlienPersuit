@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System;
 
 public class Player
 {
@@ -11,7 +12,10 @@ public class Player
     public float Vx { get; set; }
     public float Vy { get; set; }
     public float Size { get; set; } = 150;
-    public List<Image> img { get; set; } = new List<Image>();
+    public Image img { get; set; }
+    public static int ImageIndex { get; set; }
+    public static int SpeedIndex { get; set; }
+    public static bool Movement { get; set; } = false;
 
     public static Image[] playerAnim =
     {
@@ -29,13 +33,32 @@ public class Player
         Bitmap.FromFile("./assets/player/12left.png"),
     };
 
+    public Player()
+    {
+        img = playerAnim[0];
+    }
+
     public void Draw(Graphics g, PictureBox pb)
     {
-        g.DrawImage(playerAnim[0], 
-            pb.Width / 2 - 75, 
-            pb.Height / 2 -75 ,
-            Size, Size
-        );
+        g.DrawImage(img, pb.Width / 2 - 75, pb.Height / 2 - 75, Size, Size);
+
+        const int speed = 4;
+
+        if (Movement == true)
+        {
+            if (SpeedIndex < speed)
+            {
+                this.img = playerAnim[ImageIndex + 1];
+                SpeedIndex++;
+            }
+            else
+            {
+                this.img = playerAnim[ImageIndex + 2];
+                SpeedIndex++;
+                if (SpeedIndex >= 2 * speed)
+                    SpeedIndex = 0;
+            }
+        }
     }
 
     public void DrawStats(Graphics g, PictureBox pb)

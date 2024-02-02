@@ -55,12 +55,12 @@ public class Game : Form
             G.InterpolationMode = InterpolationMode.NearestNeighbor;
             G.PixelOffsetMode = PixelOffsetMode.HighQuality;
             Point chestPosition = new(
-                GlobalSeed.Current.Random.Next(Pb.Width), 
+                GlobalSeed.Current.Random.Next(Pb.Width),
                 GlobalSeed.Current.Random.Next(Pb.Height)
             );
             timer.Start();
         }
-        else 
+        else
         {
             this.Load += (o, e) =>
             {
@@ -75,7 +75,7 @@ public class Game : Form
                 G.InterpolationMode = InterpolationMode.NearestNeighbor;
                 G.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 Point chestPosition = new(
-                    GlobalSeed.Current.Random.Next(Pb.Width), 
+                    GlobalSeed.Current.Random.Next(Pb.Width),
                     GlobalSeed.Current.Random.Next(Pb.Height)
                 );
                 timer.Start();
@@ -95,49 +95,62 @@ public class Game : Form
 
                 case Keys.Up:
                     maze.MoveUp();
+                    Player.Movement = true;
+                    Player.ImageIndex = 0;
                     break;
 
                 case Keys.Left:
                     maze.MoveLeft();
+                    Player.Movement = true;
+                    Player.ImageIndex = 6;
                     break;
 
                 case Keys.Down:
                     maze.MoveDown();
+                    Player.Movement = true;
+                    Player.ImageIndex = 3;
                     break;
 
                 case Keys.Right:
                     maze.MoveRight();
+                    Player.Movement = true;
+                    Player.ImageIndex = 9;
                     break;
-                
+
                 case Keys.C:
                     Clipboard.SetText(GlobalSeed.Current.Seed.ToString());
                     break;
-                
+
                 case Keys.V:
                     GlobalSeed.Reset(int.Parse(Clipboard.GetText()));
                     Reset();
                     break;
             }
         };
-
+        
         KeyUp += (o, e) =>
         {
+            if (e.KeyCode == Keys.Up && e.KeyCode == Keys.Down && e.KeyCode == Keys.Right && e.KeyCode == Keys.Left)
+            {
+                Player.Movement = false;
+            }
+
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    maze.StopUp();
+                    maze.StopY_axis();
                     break;
 
                 case Keys.Left:
-                    maze.StopLeft();
+                    maze.StopX_axis();
                     break;
 
                 case Keys.Down:
-                    maze.StopDown();
+                    maze.StopY_axis();
                     break;
 
                 case Keys.Right:
-                    maze.StopRight();
+                    maze.StopX_axis();
                     break;
             }
         };
@@ -167,9 +180,9 @@ public class Game : Form
 
     public new void Update()
     {
-        maze.Move(new RectangleF( 
-            Pb.Width / 2 - 75, 
-            Pb.Height / 2 -75 ,
+        maze.Move(new RectangleF(
+            Pb.Width / 2 - 75,
+            Pb.Height / 2 - 75,
             150, 150), crrSpace
         );
     }
