@@ -96,25 +96,25 @@ public class Game : Form
                 case Keys.Up:
                     maze.MoveUp();
                     Player.Movement = true;
-                    Player.ImageIndex = 0;
+                    Player.ImageIndex = 3;
                     break;
 
                 case Keys.Left:
                     maze.MoveLeft();
                     Player.Movement = true;
-                    Player.ImageIndex = 6;
+                    Player.ImageIndex = 9;
                     break;
 
                 case Keys.Down:
                     maze.MoveDown();
                     Player.Movement = true;
-                    Player.ImageIndex = 3;
+                    Player.ImageIndex = 0;
                     break;
 
                 case Keys.Right:
                     maze.MoveRight();
                     Player.Movement = true;
-                    Player.ImageIndex = 9;
+                    Player.ImageIndex = 6;
                     break;
 
                 case Keys.C:
@@ -130,27 +130,30 @@ public class Game : Form
         
         KeyUp += (o, e) =>
         {
-            if (e.KeyCode == Keys.Up && e.KeyCode == Keys.Down && e.KeyCode == Keys.Right && e.KeyCode == Keys.Left)
-            {
-                Player.Movement = false;
-            }
-
             switch (e.KeyCode)
             {
                 case Keys.Up:
                     maze.StopY_axis();
+                    Player.Img = Player.playerAnim[3];
+                    Player.Movement = false;
                     break;
 
                 case Keys.Left:
                     maze.StopX_axis();
+                    Player.Img = Player.playerAnim[9];
+                    Player.Movement = false;
                     break;
 
                 case Keys.Down:
                     maze.StopY_axis();
+                    Player.Img = Player.playerAnim[0];
+                    Player.Movement = false;
                     break;
 
                 case Keys.Right:
                     maze.StopX_axis();
+                    Player.Img = Player.playerAnim[6];
+                    Player.Movement = false;
                     break;
             }
         };
@@ -165,7 +168,7 @@ public class Game : Form
     {
         G.Clear(Color.Black);
         Update();
-        maze.Draw(G, crrSpace);
+        maze.Draw(G, crrSpace);    
         player.Draw(G, Pb);
         lantern.Draw(G, Pb);
         player.DrawStats(G, Pb);

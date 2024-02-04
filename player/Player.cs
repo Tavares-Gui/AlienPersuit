@@ -1,7 +1,5 @@
 using System.Drawing;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System;
 
 public class Player
 {
@@ -11,11 +9,13 @@ public class Player
     public int Tools { get; set; } = 0;
     public float Vx { get; set; }
     public float Vy { get; set; }
-    public float Size { get; set; } = 150;
-    public Image img { get; set; }
+    public float SizeX { get; set; } = 150;
+    public float SizeY { get; set; } = 150;
+    public static Image Img { get; set; }
     public static int ImageIndex { get; set; }
     public static int SpeedIndex { get; set; }
     public static bool Movement { get; set; } = false;
+    public static Image ImgPadrao { get; set; }
 
     public static Image[] playerAnim =
     {
@@ -35,12 +35,12 @@ public class Player
 
     public Player()
     {
-        img = playerAnim[0];
+        Img = playerAnim[0];
     }
 
     public void Draw(Graphics g, PictureBox pb)
     {
-        g.DrawImage(img, pb.Width / 2 - 75, pb.Height / 2 - 75, Size, Size);
+        g.DrawImage(Img, pb.Width / 2 - 75, pb.Height / 2 - 75, SizeX, SizeY);
 
         const int speed = 4;
 
@@ -48,12 +48,12 @@ public class Player
         {
             if (SpeedIndex < speed)
             {
-                this.img = playerAnim[ImageIndex + 1];
+                Img = playerAnim[ImageIndex + 1];
                 SpeedIndex++;
             }
             else
             {
-                this.img = playerAnim[ImageIndex + 2];
+                Img = playerAnim[ImageIndex + 2];
                 SpeedIndex++;
                 if (SpeedIndex >= 2 * speed)
                     SpeedIndex = 0;
