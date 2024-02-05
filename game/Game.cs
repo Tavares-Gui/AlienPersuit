@@ -10,6 +10,7 @@ public class Game : Form
     public Bitmap Bmp { get; set; }
     public Timer Tmr { get; set; }
     public static PictureBox Pb { get; set; }
+    public static bool GameStart { get; set; } = false;
 
     private Lantern lantern = new();
     private Player player = new();
@@ -85,6 +86,11 @@ public class Game : Form
         Controls.Add(Pb);
         timer.Tick += (o, e) => this.Tick();
 
+        Pb.MouseDown += (o, e) => 
+        {
+            GameStart = true;
+        };
+
         KeyDown += (o, e) =>
         {
             switch (e.KeyCode)
@@ -127,7 +133,7 @@ public class Game : Form
                     break;
             }
         };
-        
+
         KeyUp += (o, e) =>
         {
             switch (e.KeyCode)
@@ -164,11 +170,11 @@ public class Game : Form
         Reset();
     }
 
-    public void Tick()
+    public void Draw()
     {
         G.Clear(Color.Black);
         Update();
-        maze.Draw(G, crrSpace);    
+        maze.Draw(G, crrSpace);
         player.Draw(G, Pb);
         lantern.Draw(G, Pb);
         player.DrawStats(G, Pb);
@@ -179,6 +185,14 @@ public class Game : Form
             new PointF(20, Pb.Height - 20)
         );
         Pb.Refresh();
+    }
+
+    public void Tick()
+    {
+        if (GameStart)
+            Draw();
+        else
+            Menu.Draw(G);
     }
 
     public new void Update()

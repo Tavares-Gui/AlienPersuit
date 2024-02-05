@@ -14,10 +14,8 @@ public class Portal
         Img = Bitmap.FromFile("./assets/objects/portal.png");
     }
 
-    public void Draw(Graphics g, PictureBox pb)
+    public void Draw(Graphics g, PictureBox pb, float x, float y)
     {
-        // g.DrawImage(,, SizeX, SizeY); 
-
-        
+        g.DrawImage(Img, x, y, SizeX, SizeY); 
     }
 }

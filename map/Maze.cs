@@ -216,6 +216,7 @@ public class Maze
         if (space == null)
             return;
         DrawWall(g, space, Location.X, Location.Y);
+        
     }
 
     private void DrawWall(Graphics g, Space space, float x, float y, List<Space> visited = null)
