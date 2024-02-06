@@ -24,7 +24,7 @@ public class Game : Form
         if (this.Tmr is not null)
             this.Tmr.Stop();
 
-        maze = Maze.Prim(50, 50);
+        maze = Maze.Prim(5, 5);
         crrSpace = maze.Spaces
             .OrderByDescending(s => GlobalSeed.Current.Random.Next())
             .FirstOrDefault();
@@ -174,7 +174,7 @@ public class Game : Form
     {
         maze.Draw(G, crrSpace);
         player.Draw(G, Pb);
-        lantern.Draw(G, Pb);
+        // lantern.Draw(G, Pb);
         player.DrawStats(G, Pb);
         G.DrawString(
             $"seed: {GlobalSeed.Current.Seed}. press C to copy seed.",

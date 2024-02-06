@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.CodeDom;
 
 public class Maze
 {
@@ -218,7 +219,28 @@ public class Maze
     {
         if (space == null)
             return;
+        DrawPortal(g, space, Location.X, Location.Y);
         DrawWall(g, space, Location.X, Location.Y);
+    }
+
+    private void DrawPortal(Graphics g, Space space, float x, float y)
+    {
+        if (Portal.PortalCreated == false)
+        {
+            Portal.PortalCreated = true;
+
+            if(
+                space.Left != null && space.Top != null && space.Right != null && space.Bottom == null ||
+                space.Left != null && space.Top != null && space.Right == null && space.Bottom != null ||
+                space.Left != null && space.Top == null && space.Right != null && space.Bottom != null ||
+                space.Left == null && space.Top != null && space.Right != null && space.Bottom != null
+            )
+            {
+                g.DrawImage(Portal.Img, x, y, Portal.SizeX, Portal.SizeY);
+            }
+        }
+        else
+            return;
     }
 
     private void DrawWall(Graphics g, Space space, float x, float y, List<Space> visited = null)
