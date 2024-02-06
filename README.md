@@ -23,7 +23,7 @@
 - [X] Walk
 - [X] Colision
 - [ ] Shoot
-- [ ] Animation
+- [X] Animation
 - [ ] Give and recieve damage
 
 
@@ -75,6 +75,7 @@
 - [ ] Draw enemies
 - [ ] Draw tools
 - [ ] Draw portal
+- [X] Menu Screen
 
 
 ### DLC
