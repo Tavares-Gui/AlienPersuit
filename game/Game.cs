@@ -172,8 +172,6 @@ public class Game : Form
 
     public void Draw()
     {
-        G.Clear(Color.Black);
-        Update();
         maze.Draw(G, crrSpace);
         player.Draw(G, Pb);
         lantern.Draw(G, Pb);
@@ -184,15 +182,19 @@ public class Game : Form
             Brushes.White,
             new PointF(20, Pb.Height - 20)
         );
-        Pb.Refresh();
     }
 
     public void Tick()
     {
+        G.Clear(Color.Black);
+        Update();
+
         if (GameStart)
             Draw();
         else
             Menu.Draw(G);
+
+        Pb.Refresh();
     }
 
     public new void Update()
