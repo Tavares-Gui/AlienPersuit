@@ -188,10 +188,8 @@ public class Maze
             return false;
         visited.Add(space);
 
-        // Adjust the dimensions of the player's hitbox based on its actual size
         RectangleF playerHitbox = new RectangleF(player.X, player.Y, Player.SizeX, Player.SizeY);
 
-        // Adjust the intersection calculations based on the player's size and position
         if (space.Top is not null && hasWall(playerHitbox, x, y - wallSize, space.Top, visited))
             return true;
         else if (space.Top is null && playerHitbox.IntersectsWith(new RectangleF(x, y - 5, wallSize, 5)))
