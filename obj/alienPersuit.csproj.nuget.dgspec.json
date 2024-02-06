@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj": {}
+    "C:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj": {}
   },
   "projects": {
-    "c:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj": {
+    "C:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj",
+        "projectUniqueName": "C:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj",
         "projectName": "alienPersuit",
-        "projectPath": "c:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj",
+        "projectPath": "C:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj",
         "packagesPath": "C:\\Users\\disrct\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\disrct\\Desktop\\alienPersuit\\obj\\",
+        "outputPath": "C:\\Users\\disrct\\Desktop\\alienPersuit\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\disrct\\AppData\\Roaming\\NuGet\\NuGet.Config",
