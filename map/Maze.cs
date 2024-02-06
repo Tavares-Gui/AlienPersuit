@@ -158,7 +158,7 @@ public class Maze
             vy = max;
         else if (vy < -max)
             vy = -max;
-        
+
         if (HasWall(player, Location.X, Location.Y, crrSpace))
             Location = oldLocation;
     }
@@ -171,7 +171,7 @@ public class Maze
 
     public void StopY_axis() => Ay = 0;
     public void StopX_axis() => Ax = 0;
-    
+
     public void StopUp() => Ay = 0;
     public void StopDown() => Ay = 0;
     public void StopRight() => Ax = 0;
@@ -179,7 +179,7 @@ public class Maze
 
     public bool HasWall(RectangleF player, float x, float y, Space crrSpace)
         => hasWall(player, x, y, crrSpace);
-    
+
     private bool hasWall(RectangleF player, float x, float y, Space space, List<Space> visited = null)
     {
         visited ??= new();
@@ -188,35 +188,39 @@ public class Maze
             return false;
         visited.Add(space);
 
-        if (space.Top is not null && hasWall(player, x, y - wallSize, space.Top, visited))
+        // Adjust the dimensions of the player's hitbox based on its actual size
+        RectangleF playerHitbox = new RectangleF(player.X, player.Y, Player.SizeX, Player.SizeY);
+
+        // Adjust the intersection calculations based on the player's size and position
+        if (space.Top is not null && hasWall(playerHitbox, x, y - wallSize, space.Top, visited))
             return true;
-        else if (space.Top is null && player.IntersectsWith(new RectangleF(x, y - 5, wallSize, 20)))
+        else if (space.Top is null && playerHitbox.IntersectsWith(new RectangleF(x, y - 5, wallSize, 5)))
             return true;
 
-        if (space.Bottom is not null && hasWall(player, x, y + wallSize, space.Bottom, visited))
+        if (space.Bottom is not null && hasWall(playerHitbox, x, y + wallSize, space.Bottom, visited))
             return true;
-        else if (space.Bottom is null && player.IntersectsWith(new RectangleF(x, y + wallSize - 5, wallSize, 20)))
+        else if (space.Bottom is null && playerHitbox.IntersectsWith(new RectangleF(x, y + wallSize - 5, wallSize, 5)))
             return true;
 
-        if (space.Left is not null && hasWall(player, x - wallSize, y, space.Left, visited))
+        if (space.Left is not null && hasWall(playerHitbox, x - wallSize, y, space.Left, visited))
             return true;
-        else if (space.Left is null && player.IntersectsWith(new RectangleF(x - 5, y, 20, wallSize)))
+        else if (space.Left is null && playerHitbox.IntersectsWith(new RectangleF(x - 5, y, 5, wallSize)))
             return true;
-        
-        if (space.Right is not null && hasWall(player, x + wallSize, y, space.Right, visited))
+
+        if (space.Right is not null && hasWall(playerHitbox, x + wallSize, y, space.Right, visited))
             return true;
-        else if (space.Right is null && player.IntersectsWith(new RectangleF(x + wallSize - 5, y, 20, wallSize)))
+        else if (space.Right is null && playerHitbox.IntersectsWith(new RectangleF(x + wallSize - 5, y, 5, wallSize)))
             return true;
-        
+
         return false;
     }
+
 
     public void Draw(Graphics g, Space space)
     {
         if (space == null)
             return;
         DrawWall(g, space, Location.X, Location.Y);
-        
     }
 
     private void DrawWall(Graphics g, Space space, float x, float y, List<Space> visited = null)

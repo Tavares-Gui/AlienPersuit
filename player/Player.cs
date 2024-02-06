@@ -9,8 +9,8 @@ public class Player
     public int Tools { get; set; } = 0;
     public float Vx { get; set; }
     public float Vy { get; set; }
-    public float SizeX { get; set; } = 150;
-    public float SizeY { get; set; } = 150;
+    public static float SizeX { get; set; } = 80;
+    public static float SizeY { get; set; } = 95;
     public static Image Img { get; set; }
     public static int ImageIndex { get; set; }
     public static int SpeedIndex { get; set; }
@@ -40,7 +40,10 @@ public class Player
 
     public void Draw(Graphics g, PictureBox pb)
     {
+        // Pen pen = new(Color.Red, 5f);
+
         g.DrawImage(Img, pb.Width / 2 - 75, pb.Height / 2 - 75, SizeX, SizeY);
+        // g.DrawRectangle(pen, pb.Width / 2 - 75, pb.Height / 2 - 75, SizeX, SizeY);
 
         const int speed = 4;
 
@@ -69,8 +72,9 @@ public class Player
         Font font = new("Arial", 12, FontStyle.Bold);
 
         g.DrawImage(Images.stats[0], pb.Width * 0.01f, pb.Height * 0.01f);
-        g.DrawImage(Images.stats[1], pb.Width * 0.06f, pb.Height * 0.01f);
-        g.DrawString(PlayerLife.ToString(), font, textBrush, new PointF(pb.Width * 0.05f, pb.Height * 0.05f));
-        g.DrawString(Seeds.ToString(), font, textBrush, new PointF(pb.Width * 0.10f, pb.Height * 0.05f));
+        g.DrawString(PlayerLife.ToString(), font, textBrush, new PointF(pb.Width * 0.06f, pb.Height * 0.05f));
+
+        g.DrawImage(Images.stats[1], pb.Width * 0.01f, pb.Height * 0.08f);
+        g.DrawString(Seeds.ToString(), font, textBrush, new PointF(pb.Width * 0.06f, pb.Height * 0.12f));
     }
 }
