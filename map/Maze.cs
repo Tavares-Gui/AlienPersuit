@@ -22,6 +22,8 @@ public class Maze
     private static int StashSx { get; set; }
     private static int StashSy { get; set; }
 
+    Portal portal = new();
+
     public void Reset()
     {
         foreach (var space in Spaces)
@@ -171,6 +173,9 @@ public class Maze
 
         if (HasWall(player, Location.X, Location.Y, crrSpace))
             Location = oldLocation;
+
+        if (portal.HasPlayer(player, Location.X, Location.Y, crrSpace))
+            MessageBox.Show("A AAAAA LE LEK LEK LEK LEK LEK"); 
     }
 
     public void MoveUp() => Ay = 1;
