@@ -123,6 +123,10 @@ public class Game : Form
                     Player.ImageIndex = 6;
                     break;
 
+                case Keys.Enter:
+                    //Portal
+                    break;
+
                 case Keys.C:
                     Clipboard.SetText(GlobalSeed.Current.Seed.ToString());
                     break;
