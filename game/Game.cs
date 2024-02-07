@@ -24,7 +24,7 @@ public class Game : Form
         if (this.Tmr is not null)
             this.Tmr.Stop();
 
-        maze = Maze.Prim(2, 2);
+        maze = Maze.Prim(5, 5);
         crrSpace = maze.Spaces
             .OrderByDescending(s => GlobalSeed.Current.Random.Next())
             .FirstOrDefault();
@@ -173,10 +173,6 @@ public class Game : Form
     public void Draw()
     {
         maze.Draw(G, crrSpace);
-        if (Portal.PortalCreated == false)
-        {
-            Maze.DrawPortal(G, crrSpace, Location.X, Location.Y);
-        }
         player.Draw(G, Pb);
         // lantern.Draw(G, Pb);
         player.DrawStats(G, Pb);
@@ -197,6 +193,7 @@ public class Game : Form
             Draw();
         else
             Menu.Draw(G);
+
 
         Pb.Refresh();
     }

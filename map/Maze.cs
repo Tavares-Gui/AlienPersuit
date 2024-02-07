@@ -1,7 +1,8 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.CodeDom;
+using System.Dynamic;
+using System.Windows.Forms;
 
 public class Maze
 {
@@ -9,13 +10,17 @@ public class Maze
     public Space Root { get; set; }
     public List<Space> Spaces { get; } = new();
     public PointF Location { get; set; } = new(0, 0);
-
     public short Ay { get; set; }
     public short Ax { get; set; }
     private DateTime dt = DateTime.Now;
     private float vx { get; set; }
     private float vy { get; set; }
     private float BaseAcceleration { get; set; } = 2_500;
+    private static Random rnd = new Random();
+    private float xPortal { get; set; }
+    private float yPortal { get; set; }
+    private static int StashSx { get; set; }
+    private static int StashSy { get; set; }
 
     public void Reset()
     {
@@ -25,6 +30,10 @@ public class Maze
 
     public static Maze Prim(int sx, int sy)
     {
+        StashSx = sx;
+        StashSy = sy;
+
+        Portal.PortalCreated = false;
         Maze maze = new Maze();
         var priority = new PriorityQueue<(int i, int j), byte>();
         byte[,] topgrid = new byte[sx, sy];
@@ -214,25 +223,21 @@ public class Maze
         return false;
     }
 
-
     public void Draw(Graphics g, Space space)
     {
         if (space == null)
             return;
-        DrawWall(g, space, Location.X, Location.Y);
-    }
 
-    public static void DrawPortal(Graphics g, Space space, float x, float y)
-    {
-        if(
-            space.Left != null && space.Top != null && space.Right != null && space.Bottom == null ||
-            space.Left != null && space.Top != null && space.Right == null && space.Bottom != null ||
-            space.Left != null && space.Top == null && space.Right != null && space.Bottom != null ||
-            space.Left == null && space.Top != null && space.Right != null && space.Bottom != null
-        )
+        DrawWall(g, space, Location.X, Location.Y);
+
+        if (!Portal.PortalCreated)
         {
-            g.DrawImage(Portal.Img, x, y, Portal.SizeX, Portal.SizeY);
+            xPortal = 175 + 350 * GlobalSeed.Current.Random.Next(0, StashSx);
+            yPortal = 175 + 350 * GlobalSeed.Current.Random.Next(0, StashSy);
+            Portal.PortalCreated = true;
         }
+
+        Portal.Draw(g, xPortal + Location.X, yPortal + Location.Y);
     }
 
     private void DrawWall(Graphics g, Space space, float x, float y, List<Space> visited = null)
@@ -293,7 +298,6 @@ public class Maze
         }
     }
 }
-
 
 public class Space
 {

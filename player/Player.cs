@@ -40,10 +40,8 @@ public class Player
 
     public void Draw(Graphics g, PictureBox pb)
     {
-        // Pen pen = new(Color.Red, 5f);
 
         g.DrawImage(Img, pb.Width / 2 - 75, pb.Height / 2 - 75, SizeX, SizeY);
-        // g.DrawRectangle(pen, pb.Width / 2 - 75, pb.Height / 2 - 75, SizeX, SizeY);
 
         const int speed = 4;
 
