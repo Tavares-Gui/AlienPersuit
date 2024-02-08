@@ -75,4 +75,14 @@ public class Player
         g.DrawImage(Images.stats[1], pb.Width * 0.01f, pb.Height * 0.08f);
         g.DrawString(Seeds.ToString(), font, textBrush, new PointF(pb.Width * 0.06f, pb.Height * 0.12f));
     }
+
+    public static void DrawRecord(Graphics g, PictureBox pb)
+    {
+        g.DrawString(
+            $"Actual personal record: {Game.timesFinished - 1}.",
+            SystemFonts.MenuFont,
+            Brushes.White,
+            new PointF(20, Game.Pb.Height - 100)
+        );
+    }
 }

@@ -23,8 +23,7 @@ public class Maze
     private float yPortal { get; set; }
     private static int StashSx { get; set; }
     private static int StashSy { get; set; }
-    private static RectangleF MazeVerification = new RectangleF();
-
+    
     private Space lefttop = null;
 
     Portal portal = new();

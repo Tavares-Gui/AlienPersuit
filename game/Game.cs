@@ -3,7 +3,6 @@ using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
-using System.Security.Cryptography.Pkcs;
 
 public class Game : Form
 {
@@ -12,6 +11,10 @@ public class Game : Form
     public Timer Tmr { get; set; }
     public static PictureBox Pb { get; set; }
     public static bool GameStart { get; set; } = false;
+    public static DateTime Timer { get; set; }
+    public static int GameDuration { get; set; } = 5000; //5000
+    public static int RemainingTime { get; set; } = GameDuration;
+    public static int timesFinished { get; set; } = 0;
 
     private Lantern lantern = new();
     private Player player = new();
@@ -39,6 +42,8 @@ public class Game : Form
 
         WindowState = FormWindowState.Maximized;
         FormBorderStyle = FormBorderStyle.None;
+
+        RemainingTime = GameDuration;
 
         if (loaded)
         {
@@ -81,11 +86,12 @@ public class Game : Form
                 Action reset = null;
                 reset = delegate
                 {
-                    maze = Maze.Prim(50, 50, Pb.Width, Pb.Height);
+                    maze = Maze.Prim(5, 5, Pb.Width, Pb.Height);
                     crrSpace = maze.Spaces
                         .OrderByDescending(s => GlobalSeed.Current.Random.Next())
                         .FirstOrDefault();
                     maze.OnExit += reset;
+                    timesFinished++;
                 };
                 reset();
 
@@ -104,7 +110,7 @@ public class Game : Form
         Controls.Add(Pb);
         timer.Tick += (o, e) => this.Tick();
 
-        Pb.MouseDown += (o, e) => 
+        Pb.MouseDown += (o, e) =>
         {
             GameStart = true;
         };
@@ -196,14 +202,16 @@ public class Game : Form
     {
         maze.Draw(G, crrSpace);
         player.Draw(G, Pb);
-        // lantern.Draw(G, Pb);
+        lantern.Draw(G, Pb);
         player.DrawStats(G, Pb);
         G.DrawString(
             $"seed: {GlobalSeed.Current.Seed}. press C to copy seed.",
             SystemFonts.MenuFont,
             Brushes.White,
-            new PointF(20, Pb.Height - 20)
+            new PointF(20, Pb.Height - 60)
         );
+        GameOver.DrawTimer(G);
+        Player.DrawRecord(G, Pb);
     }
 
     public void Tick()
@@ -212,10 +220,22 @@ public class Game : Form
         Update();
 
         if (GameStart)
-            Draw();
+        {
+            RemainingTime--;
+
+            if (RemainingTime <= 0)
+            {
+                GameOver.Draw(G);
+                RemainingTime = 0;
+                GameStart = false;
+                Tmr.Stop();
+                Player.DrawRecord(G, Pb);
+            }
+            else
+                Draw();
+        }
         else
             Menu.Draw(G);
-
 
         Pb.Refresh();
     }
