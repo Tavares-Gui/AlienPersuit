@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Windows.Forms;
+using System.Drawing.Text;
+using System.CodeDom;
 
 public class Maze
 {
@@ -10,17 +12,20 @@ public class Maze
     public Space Root { get; set; }
     public List<Space> Spaces { get; } = new();
     public PointF Location { get; set; } = new(0, 0);
+    public PointF InitialLocation { get; set; } = new(0, 0);
     public short Ay { get; set; }
     public short Ax { get; set; }
     private DateTime dt = DateTime.Now;
     private float vx { get; set; }
     private float vy { get; set; }
     private float BaseAcceleration { get; set; } = 2_500;
-    private static Random rnd = new Random();
     private float xPortal { get; set; }
     private float yPortal { get; set; }
     private static int StashSx { get; set; }
     private static int StashSy { get; set; }
+    private static RectangleF MazeVerification = new RectangleF();
+
+    private Space lefttop = null;
 
     Portal portal = new();
 
@@ -30,7 +35,7 @@ public class Maze
             space.Reset();
     }
 
-    public static Maze Prim(int sx, int sy)
+    public static Maze Prim(int sx, int sy, float wid, float hei)
     {
         StashSx = sx;
         StashSy = sy;
@@ -53,6 +58,14 @@ public class Maze
         }
 
         maze.Root = add(0, 0);
+        maze.Location = new PointF(
+            wid / 2 - wallSize / 2,
+            hei / 2 - wallSize / 2
+        );
+        maze.InitialLocation = new PointF(
+            wid / 2 - wallSize / 2,
+            hei / 2 - wallSize / 2
+        );
 
         while (priority.Count > 0)
         {
@@ -60,6 +73,7 @@ public class Maze
             connect(pos.i, pos.j);
         }
 
+        maze.lefttop = vertices[0, 0];
         return maze;
 
         Space add(int i, int j)
@@ -175,7 +189,10 @@ public class Maze
             Location = oldLocation;
 
         if (portal.HasPlayer(player, crrSpace))
-            MessageBox.Show("A AAAAA LE LEK LEK LEK LEK LEK");
+        {
+            if (OnExit is not null)
+                OnExit();
+        }
     }
 
     public void MoveUp() => Ay = 1;
@@ -191,6 +208,7 @@ public class Maze
     public void StopDown() => Ay = 0;
     public void StopRight() => Ax = 0;
     public void StopLeft() => Ax = 0;
+    
 
     public bool HasWall(RectangleF player, float x, float y, Space crrSpace)
         => hasWall(player, x, y, crrSpace);
@@ -237,12 +255,16 @@ public class Maze
 
         if (!Portal.PortalCreated)
         {
-            xPortal = 175 + 350 * GlobalSeed.Current.Random.Next(0, StashSx);
-            yPortal = 175 + 350 * GlobalSeed.Current.Random.Next(0, StashSy);
+            xPortal = wallSize / 2 + wallSize * GlobalSeed.Current.Random.Next(0, StashSx);
+            yPortal = wallSize / 2 + wallSize * GlobalSeed.Current.Random.Next(0, StashSy);
             Portal.PortalCreated = true;
         }
 
-        Portal.Draw(g, xPortal + Location.X, yPortal + Location.Y);
+        var crr = GetCurrentSpace(space, Location.X, Location.Y);
+        if (crr is null)
+            return;
+        var leftPos = GetLeftPoint(crr, Location.X, Location.Y);
+        Portal.Draw(g, xPortal + leftPos.X, yPortal + leftPos.Y);
     }
 
     private void DrawWall(Graphics g, Space space, float x, float y, List<Space> visited = null)
@@ -302,6 +324,93 @@ public class Maze
             DrawWall(g, space.Right, x + wallSize, y, visited);
         }
     }
+
+    public PointF GetLeftPoint(Space crr, float crrX, float crrY, List<Space> visited = null)
+    {
+        visited ??= new();
+        if (crr == lefttop)
+            return new PointF(crrX, crrY);
+
+        if (visited.Contains(crr))
+            return Point.Empty;
+        visited.Add(crr);
+        
+        if (crr.Top is not null)
+        {
+            var pt = GetLeftPoint(crr.Top, crrX, crrY - wallSize, visited);
+            if (pt != Point.Empty)
+                return pt;
+        }
+
+        if (crr.Left is not null)
+        {
+            var pt = GetLeftPoint(crr.Left, crrX - wallSize, crrY, visited);
+            if (pt != Point.Empty)
+                return pt;
+        }
+
+        if (crr.Bottom is not null)
+        {
+            var pt = GetLeftPoint(crr.Bottom, crrX, crrY + wallSize, visited);
+            if (pt != Point.Empty)
+                return pt;
+        }
+
+        if (crr.Right is not null)
+        {
+            var pt = GetLeftPoint(crr.Right, crrX + wallSize, crrY, visited);
+            if (pt != Point.Empty)
+                return pt;
+        }
+
+        return Point.Empty;
+    }
+
+    public Space GetCurrentSpace(Space crr, float crrX, float crrY, List<Space> visited = null)
+    {
+        visited ??= new();
+
+        var spaceRect = new RectangleF(crrX, crrY, wallSize, wallSize);
+        var playerPos = new PointF(Location.X + wallSize / 2, Location.Y + wallSize / 2);
+        if (spaceRect.Contains(playerPos))
+            return crr;
+
+        if (visited.Contains(crr))
+            return null;
+        visited.Add(crr);
+        
+        if (crr.Top is not null)
+        {
+            var space = GetCurrentSpace(crr.Top, crrX, crrY - wallSize, visited);
+            if (space is not null)
+                return space;
+        }
+
+        if (crr.Left is not null)
+        {
+            var space = GetCurrentSpace(crr.Left, crrX - wallSize, crrY, visited);
+            if (space is not null)
+                return space;
+        }
+
+        if (crr.Bottom is not null)
+        {
+            var space = GetCurrentSpace(crr.Bottom, crrX, crrY + wallSize, visited);
+            if (space is not null)
+                return space;
+        }
+
+        if (crr.Right is not null)
+        {
+            var space = GetCurrentSpace(crr.Right, crrX + wallSize, crrY, visited);
+            if (space is not null)
+                return space;
+        }
+
+        return null;
+    }
+
+    public event Action OnExit;
 }
 
 public class Space

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Security.Cryptography.Pkcs;
 
 public class Game : Form
 {
@@ -23,11 +24,6 @@ public class Game : Form
         this.Controls.Clear();
         if (this.Tmr is not null)
             this.Tmr.Stop();
-
-        maze = Maze.Prim(5, 5);
-        crrSpace = maze.Spaces
-            .OrderByDescending(s => GlobalSeed.Current.Random.Next())
-            .FirstOrDefault();
 
         var timer = new Timer
         {
@@ -51,6 +47,17 @@ public class Game : Form
                 Pb.Height
             );
 
+            Action reset = null;
+            reset = delegate
+            {
+                maze = Maze.Prim(5, 5, Pb.Width, Pb.Height);
+                crrSpace = maze.Spaces
+                    .OrderByDescending(s => GlobalSeed.Current.Random.Next())
+                    .FirstOrDefault();
+                maze.OnExit += reset;
+            };
+            reset();
+
             G = Graphics.FromImage(this.Bmp);
             Pb.Image = this.Bmp;
             G.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -70,6 +77,17 @@ public class Game : Form
                     Pb.Width,
                     Pb.Height
                 );
+
+                Action reset = null;
+                reset = delegate
+                {
+                    maze = Maze.Prim(50, 50, Pb.Width, Pb.Height);
+                    crrSpace = maze.Spaces
+                        .OrderByDescending(s => GlobalSeed.Current.Random.Next())
+                        .FirstOrDefault();
+                    maze.OnExit += reset;
+                };
+                reset();
 
                 G = Graphics.FromImage(this.Bmp);
                 Pb.Image = this.Bmp;

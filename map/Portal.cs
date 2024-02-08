@@ -14,31 +14,13 @@ public class Portal
 
     public static void Draw(Graphics g, float x, float y)
     {
-        Pen pen = new(Color.Red, 5f);
         PortalHitbox = new RectangleF(x - SizeX / 2, y - SizeY / 2, SizeX, SizeY);
 
         X = x;
         Y = y;
 
         g.DrawImage(Img, PortalHitbox);
-        g.DrawRectangle(pen, PortalHitbox);
     }
-
-    // public bool HasPlayer(RectangleF player, float x, float y)
-    //     => hasPlayer(player, x, y);
-
-    // private bool hasPlayer(RectangleF player, float x, float y)
-    // {
-    //     RectangleF playerHitbox = new RectangleF(player.X, player.Y, Player.SizeX, Player.SizeY);
-    //     RectangleF portalHitbox = new RectangleF(x - SizeX / 2, y - SizeY / 2, SizeY, SizeY);
-
-    //     if (portalHitbox.Contains(playerHitbox))
-    //     {
-    //         return true;
-    //     }
-
-    //     return false;
-    // }
 
     public bool HasPlayer(RectangleF player, Space space)
     {
