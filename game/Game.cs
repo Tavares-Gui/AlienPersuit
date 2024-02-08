@@ -205,7 +205,7 @@ public class Game : Form
         maze.Draw(G, crrSpace);
         player.Draw(G, Pb);
         lantern.Draw(G, Pb);
-        player.DrawStats(G, Pb);
+        // player.DrawStats(G, Pb);
         G.DrawString(
             $"seed: {GlobalSeed.Current.Seed}. press C to copy seed.",
             SystemFonts.MenuFont,

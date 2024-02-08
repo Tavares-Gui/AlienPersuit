@@ -62,19 +62,19 @@ public class Player
         }
     }
 
-    public void DrawStats(Graphics g, PictureBox pb)
-    {
-        Color textColor = Color.White;
-        SolidBrush textBrush = new(textColor);
+    // public void DrawStats(Graphics g, PictureBox pb)
+    // {
+    //     Color textColor = Color.White;
+    //     SolidBrush textBrush = new(textColor);
 
-        Font font = new("Arial", 12, FontStyle.Bold);
+    //     Font font = new("Arial", 12, FontStyle.Bold);
 
-        g.DrawImage(Images.stats[0], pb.Width * 0.01f, pb.Height * 0.01f);
-        g.DrawString(PlayerLife.ToString(), font, textBrush, new PointF(pb.Width * 0.06f, pb.Height * 0.05f));
+    //     g.DrawImage(Images.stats[0], pb.Width * 0.01f, pb.Height * 0.01f);
+    //     g.DrawString(PlayerLife.ToString(), font, textBrush, new PointF(pb.Width * 0.06f, pb.Height * 0.05f));
 
-        g.DrawImage(Images.stats[1], pb.Width * 0.01f, pb.Height * 0.08f);
-        g.DrawString(Seeds.ToString(), font, textBrush, new PointF(pb.Width * 0.06f, pb.Height * 0.12f));
-    }
+    //     g.DrawImage(Images.stats[1], pb.Width * 0.01f, pb.Height * 0.08f);
+    //     g.DrawString(Seeds.ToString(), font, textBrush, new PointF(pb.Width * 0.06f, pb.Height * 0.12f));
+    // }
 
     public static void DrawRecord(Graphics g, PictureBox pb)
     {
