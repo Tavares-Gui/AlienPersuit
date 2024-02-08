@@ -174,8 +174,8 @@ public class Maze
         if (HasWall(player, Location.X, Location.Y, crrSpace))
             Location = oldLocation;
 
-        if (portal.HasPlayer(player, Location.X, Location.Y, crrSpace))
-            MessageBox.Show("A AAAAA LE LEK LEK LEK LEK LEK"); 
+        if (portal.HasPlayer(player, crrSpace))
+            MessageBox.Show("A AAAAA LE LEK LEK LEK LEK LEK");
     }
 
     public void MoveUp() => Ay = 1;

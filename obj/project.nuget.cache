@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0UqsMgYq7IS+Nuje6eVZANOghcS2iGMVizF8iRSFlZOFgokiiCqfvReF+I3wEkAgfVej7+QwYCeYnqZKS/f4gA==",
+  "dgSpecHash": "nWLHdhTfep8fLH9xpDTNtrjanw16puOawAudQuKTlB3RSfz3BXDRBpDlu3PW7uDvTqW2X3R2adhtD+j3S5YB7w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Guilherme\\Desktop\\AlienPersuit\\alienPersuit.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Guilherme\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\Guilherme\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\Guilherme\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\Guilherme\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\disrct\\Desktop\\alienPersuit\\alienPersuit.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
