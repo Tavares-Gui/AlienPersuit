@@ -52,10 +52,9 @@
 
 ### PORTAL
 
-- [ ] Alter the maze to a new one
-- [ ] Colision
-- [ ] Be clickable
-- [ ] Generate portal position randomly
+- [X] Alter the maze to a new one
+- [X] Colision
+- [X] Generate portal position randomly
 
 
 ### SEED
@@ -74,7 +73,7 @@
 - [ ] Draw chests
 - [ ] Draw enemies
 - [ ] Draw tools
-- [ ] Draw portal
+- [X] Draw portal
 - [X] Menu Screen
 
 
