@@ -13,6 +13,6 @@ public class GameOver
     {
         int secs = Game.RemainingTime;
 
-        g.DrawString($"Tempo restante: {secs}s", SystemFonts.MenuFont, Brushes.White, new PointF(20, Game.Pb.Height - 80));
+        g.DrawString($"Tempo restante: {secs / 1000}s", SystemFonts.MenuFont, Brushes.White, new PointF(20, Game.Pb.Height - 80));
     }
 }

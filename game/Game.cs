@@ -12,8 +12,9 @@ public class Game : Form
     public static PictureBox Pb { get; set; }
     public static bool GameStart { get; set; } = false;
     public static DateTime Timer { get; set; }
-    public static int GameDuration { get; set; } = 5000; //5000
-    public static int RemainingTime { get; set; } = GameDuration;
+    public static DateTime GameStartTime { get; set; }
+    public static int GameDuration { get; set; } = 300000;
+    public static int RemainingTime { get; set; }
     public static int timesFinished { get; set; } = 0;
 
     private Lantern lantern = new();
@@ -43,6 +44,7 @@ public class Game : Form
         WindowState = FormWindowState.Maximized;
         FormBorderStyle = FormBorderStyle.None;
 
+        GameStartTime = DateTime.Now;
         RemainingTime = GameDuration;
 
         if (loaded)
@@ -221,7 +223,8 @@ public class Game : Form
 
         if (GameStart)
         {
-            RemainingTime--;
+            TimeSpan elapsedTime = DateTime.Now - GameStartTime;
+            RemainingTime = (int)Math.Max(0, GameDuration - elapsedTime.TotalMilliseconds);
 
             if (RemainingTime <= 0)
             {
