@@ -55,7 +55,7 @@ public class Game : Form
             Action reset = null;
             reset = delegate
             {
-                maze = Maze.Prim(5, 5, Pb.Width, Pb.Height);
+                maze = Maze.Prim(30, 30, Pb.Width, Pb.Height);
                 crrSpace = maze.Spaces
                     .OrderByDescending(s => GlobalSeed.Current.Random.Next())
                     .FirstOrDefault();

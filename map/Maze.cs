@@ -18,7 +18,7 @@ public class Maze
     private DateTime dt = DateTime.Now;
     private float vx { get; set; }
     private float vy { get; set; }
-    private float BaseAcceleration { get; set; } = 2_500;
+    private float BaseAcceleration { get; set; } = 5_000;
     private float xPortal { get; set; }
     private float yPortal { get; set; }
     private static int StashSx { get; set; }
